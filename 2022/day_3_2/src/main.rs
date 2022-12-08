@@ -1,4 +1,4 @@
-fn calc_score(letter : char) -> u32 {
+fn calc_score(letter: char) -> u32 {
     assert!(letter.is_alphabetic());
 
     if letter.is_lowercase() {
@@ -14,7 +14,6 @@ fn solve_puzzle(input_string: &String) {
     let mut score = 0;
     let mut elves = input_string.lines();
     loop {
-        
         let elf1 = match elves.next() {
             Some(val) => val,
             None => break,
@@ -30,14 +29,19 @@ fn solve_puzzle(input_string: &String) {
             }
         }
     }
-    
+
     println!("Result : {score}");
 }
 
 fn main() {
-    println!("Day 3 : Part 2!");    
-    let test_input_string = std::fs::read_to_string(std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("sample.txt")).unwrap();
-    let real_input_string = std::fs::read_to_string(std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("input.txt")).unwrap();
+    println!("Day 3 : Part 2!");
+    let test_input_string = std::fs::read_to_string(
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("sample.txt"),
+    )
+    .unwrap();
+    let real_input_string =
+        std::fs::read_to_string(std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("input.txt"))
+            .unwrap();
 
     println!("Sample:");
     solve_puzzle(&test_input_string);

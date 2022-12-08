@@ -4,7 +4,7 @@ use std::fmt::Display;
 enum Choice {
     Rock,
     Paper,
-    Scissors
+    Scissors,
 }
 impl Choice {
     fn score(&self) -> u32 {
@@ -16,7 +16,7 @@ impl Choice {
     }
 }
 impl Display for Choice {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {        
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         std::fmt::Debug::fmt(&self, f)
     }
 }
@@ -25,7 +25,7 @@ impl Display for Choice {
 enum RoundResult {
     Win,
     Tie,
-    Lose
+    Lose,
 }
 impl RoundResult {
     fn score(&self) -> u32 {
@@ -37,7 +37,7 @@ impl RoundResult {
     }
 }
 impl Display for RoundResult {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {        
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         std::fmt::Debug::fmt(&self, f)
     }
 }
@@ -58,8 +58,7 @@ fn get_opponent_choice(line_string: &str) -> Choice {
     }
 }
 
-fn get_my_choice(opp_choice : Choice, result : RoundResult) -> Choice {
-
+fn get_my_choice(opp_choice: Choice, result: RoundResult) -> Choice {
     match opp_choice {
         Choice::Rock => match result {
             RoundResult::Win => Choice::Paper,
@@ -70,39 +69,41 @@ fn get_my_choice(opp_choice : Choice, result : RoundResult) -> Choice {
             RoundResult::Win => Choice::Scissors,
             RoundResult::Tie => Choice::Paper,
             RoundResult::Lose => Choice::Rock,
-        }, 
+        },
         Choice::Scissors => match result {
             RoundResult::Win => Choice::Rock,
             RoundResult::Tie => Choice::Scissors,
             RoundResult::Lose => Choice::Paper,
-        }, 
-
+        },
     }
 }
 
 fn solve_puzzle(input_string: &String) {
     let mut score = 0;
     for line in input_string.lines() {
-
-        
         let opp_choice = get_opponent_choice(&line);
         let result = get_result(&line);
         let my_choice = get_my_choice(opp_choice, result);
         //println!("{my_choice} {opp_choice} {result}");
-        score += my_choice.score() + result.score();     
+        score += my_choice.score() + result.score();
     }
 
     println!("Result : {score}");
 }
 
 fn main() {
-    println!("Day 2 : Part 2!");    
-    let test_input_string = std::fs::read_to_string(std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("sample.txt")).unwrap();
-    let real_input_string = std::fs::read_to_string(std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("input.txt")).unwrap();
+    println!("Day 2 : Part 2!");
+    let test_input_string = std::fs::read_to_string(
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("sample.txt"),
+    )
+    .unwrap();
+    let real_input_string =
+        std::fs::read_to_string(std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("input.txt"))
+            .unwrap();
 
     println!("Sample:");
     solve_puzzle(&test_input_string);
 
     println!("Real:");
-    solve_puzzle(&real_input_string);    
+    solve_puzzle(&real_input_string);
 }
