@@ -161,7 +161,6 @@ fn solve_puzzle(input_string: &String) -> u32 {
 }
 
 fn main() {
-
     let expected_sample_output = 24933642;
 
     let (day, part) = sscanf::sscanf!(env!("CARGO_PKG_NAME"), "day_{}_{}", u32, u32).unwrap();
