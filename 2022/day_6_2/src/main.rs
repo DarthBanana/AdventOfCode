@@ -1,26 +1,23 @@
 fn solve_puzzle(input_string: &String) {
-
     for line in input_string.lines() {
         let mut marker = 13;
-        'outer : loop { 
+        'outer: loop {
             marker += 1;
-            let substr = line.get((marker - 14)..(marker)).unwrap();            
-            for (i,char) in substr.chars().enumerate() {                
-                let tail = substr.get((i+1)..).unwrap();
+            let substr = line.get((marker - 14)..(marker)).unwrap();
+            for (i, char) in substr.chars().enumerate() {
+                let tail = substr.get((i + 1)..).unwrap();
                 if tail.contains(char) {
                     continue 'outer;
                 }
             }
-            break;            
+            break;
         }
         println!("Start of packet : {}", marker);
-        
     }
-    
 }
 
 fn main() {
-    println!("Day 6 : Part 1!");
+    println!("Day 6 : Part 2!");
     let test_input_string = std::fs::read_to_string(
         std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("sample.txt"),
     )

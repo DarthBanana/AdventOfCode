@@ -15,14 +15,14 @@
 
 use std::collections::VecDeque;
 
-fn solve_puzzle(input_string: &String, stack_count: u32) {    
+fn solve_puzzle(input_string: &String, stack_count: u32) {
     let mut stacks: Vec<VecDeque<char>> = Vec::new();
     for _i in 0..stack_count {
         //let mut new_stack: VecDeque<char> = VecDeque::new();
         stacks.push(VecDeque::new());
     }
     for line in input_string.lines() {
-        if line.contains('[') {            
+        if line.contains('[') {
             for stack_number in 0..stack_count {
                 let new_crate = line
                     .chars()

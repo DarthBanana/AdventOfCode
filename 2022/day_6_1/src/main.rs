@@ -1,22 +1,19 @@
 fn solve_puzzle(input_string: &String) {
-
     for line in input_string.lines() {
         let mut marker = 3;
-        'outer : loop { 
+        'outer: loop {
             marker += 1;
-            let substr = line.get((marker - 4)..(marker)).unwrap();            
-            for (i,char) in substr.chars().enumerate() {                
-                let tail = substr.get((i+1)..).unwrap();
+            let substr = line.get((marker - 4)..(marker)).unwrap();
+            for (i, char) in substr.chars().enumerate() {
+                let tail = substr.get((i + 1)..).unwrap();
                 if tail.contains(char) {
                     continue 'outer;
                 }
             }
-            break;            
+            break;
         }
         println!("Start of packet : {}", marker);
-        
     }
-    
 }
 
 fn main() {
