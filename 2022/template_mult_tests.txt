@@ -1,0 +1,86 @@
+use std::path::{Path, PathBuf};
+
+fn solve_puzzle(input_string: &String) -> u32 {
+    let mut result = 0;
+
+    for line in input_string.lines() {
+
+    } 
+
+    result
+}
+
+fn main() {
+    //
+    // !!!! Update with the expected result for the sample data !!!!
+    //
+    //let expected_sample_output = ;
+
+    //
+    // Print the specific puzzle info
+    //
+    let (day, part) = sscanf::sscanf!(env!("CARGO_PKG_NAME"), "day_{}_{}", u32, u32).unwrap();
+    println!("Day {} : Part {}!", day, part);
+
+    //
+    // Open the directory containing the input data
+    //
+    let mut test_directory = std::fs::read_dir(std::path::Path::new(env!("CARGO_MANIFEST_DIR"))).unwrap();
+
+    //
+    // Collect the list of input files
+    //
+    let mut sample_files: Vec<PathBuf> = Vec::new();
+    for entry in test_directory {
+        if entry.unwrap().file_name().into_string().unwrap().contains("sample") {
+            sample_files.push(entry.unwrap().path());
+        }              
+    } 
+    sample_files.sort();
+
+    for sample in sample_files {
+        let data = std::fs::read_to_string(sample).unwrap();
+
+        let (result_string, test_input_string) = data.split_once('\n').unwrap();
+
+        let expected_result: u32 = result_string.parse().unwrap();
+
+            //
+        // Solve for the sample input
+        //
+        
+        println!("Testing Sample Data: {}", sample.file_name().unwrap().to_str().unwrap());
+        let result = solve_puzzle(&String::from(test_input_string));
+        println!("Sample Result : {}", result);
+    }
+
+    //
+    // Read in the real input
+    //
+    let real_input_string =
+        std::fs::read_to_string(std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("input.txt"))
+            .unwrap();
+
+    //
+    // Solve for the sample input
+    //
+    println!("Testing Sample Data:");
+    let result = solve_puzzle(&test_input_string);
+    println!("Sample Result : {}", result);
+
+    //
+    // Check if the sample input matches the expected result
+    //
+    if result != expected_sample_output {
+        println!("Wrong Answer!!!!! {}", result);
+        return;
+    }
+
+    //
+    // Solve for the real input, only in the case that the result
+    // for the sample input was correct
+    //
+    println!("Testing Real Data:");
+    let result = solve_puzzle(&real_input_string);
+    println!("Real Result : {}", result);
+}

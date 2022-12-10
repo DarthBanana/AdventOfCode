@@ -6,7 +6,7 @@ fn solve_puzzle(input_string: &String) -> i32 {
             '(' => result += 1,
             ')' => result -= 1,
             _ => panic!("bad input"),
-        };        
+        };
     }
 
     result
@@ -27,20 +27,19 @@ fn main() {
     //
     // Read in the sample input
     //
-    
+
     let test_input_string = std::fs::read_to_string(
         std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("sample.txt"),
     )
     .unwrap();
     let mut lines = test_input_string.lines();
-    
-    loop
-    {
+
+    loop {
         let line = match lines.next() {
             Some(x) => x,
             None => break,
         };
-        
+
         let expected_sample_output = dbg!(sscanf::sscanf!(line, "{}", i32).unwrap());
         let result = solve_puzzle(&lines.next().unwrap().to_string());
         println!("{}", result);
@@ -55,7 +54,6 @@ fn main() {
     let real_input_string =
         std::fs::read_to_string(std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("input.txt"))
             .unwrap();
-
 
     //
     // Solve for the real input, only in the case that the result
