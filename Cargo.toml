@@ -1,5 +1,5 @@
 [workspace]
-members=["2022/day_*"]
+members=["2022/day_*", "2015/day_*"]
 
 [workspace.dependencies]
 sscanf = "0.4.0"
