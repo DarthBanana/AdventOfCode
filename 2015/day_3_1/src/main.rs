@@ -1,23 +1,36 @@
-fn solve_puzzle(input_string: &String) -> u32 {
-    let mut result = 0;
+use std::collections::HashSet;
 
+#[derive(Eq, Hash, PartialEq, Copy, Clone)]
+struct Position {
+    x: i32,
+    y: i32,
+}
+
+fn solve_puzzle(input_string: &String) -> usize {
+    let mut map: HashSet<Position> = HashSet::new();
+    let mut current_position = Position { x: 0, y: 0 };
+
+    map.insert(current_position);
     for line in input_string.lines() {
-        let (length, width, height) = sscanf::sscanf!(line, "{}x{}x{}", u32, u32, u32).unwrap();
-        let mut faces = vec![length * width, length * height, width * height];
-        faces.sort();
-
-        let area = faces[0] * 3 + faces[1] * 2 + faces[2] * 2;
-        result += area;
+        for c in line.chars() {
+            match c {
+                '^' => current_position.y += 1,
+                '>' => current_position.x += 1,
+                'v' => current_position.y -= 1,
+                '<' => current_position.x -= 1,
+                _ => panic!("Invalid Input"),
+            };
+            map.insert(current_position);
+        }
     }
-
-    result
+    map.len()
 }
 
 fn main() {
     //
     // !!!! Update with the expected result for the sample data !!!!
     //
-    let expected_sample_output = 58 + 43;
+    let expected_sample_output = 2;
 
     //
     // Print the specific puzzle info

@@ -2,13 +2,8 @@ fn solve_puzzle(input_string: &String) -> u32 {
     let mut result = 0;
 
     for line in input_string.lines() {
-        let (length, width, height) = sscanf::sscanf!(line, "{}x{}x{}", u32, u32, u32).unwrap();
-        let mut faces = vec![length * width, length * height, width * height];
-        faces.sort();
 
-        let area = faces[0] * 3 + faces[1] * 2 + faces[2] * 2;
-        result += area;
-    }
+    } 
 
     result
 }
@@ -17,7 +12,7 @@ fn main() {
     //
     // !!!! Update with the expected result for the sample data !!!!
     //
-    let expected_sample_output = 58 + 43;
+    let expected_sample_output = ;
 
     //
     // Print the specific puzzle info

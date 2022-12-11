@@ -3,12 +3,16 @@ fn solve_puzzle(input_string: &String) -> u32 {
 
     for line in input_string.lines() {
         let (length, width, height) = sscanf::sscanf!(line, "{}x{}x{}", u32, u32, u32).unwrap();
-        let mut faces = vec![length*2+width*2,length*2+height*2,width*2+height*2];
-        faces.sort();        
-        let volume = length*width*height;
+        let mut faces = vec![
+            length * 2 + width * 2,
+            length * 2 + height * 2,
+            width * 2 + height * 2,
+        ];
+        faces.sort();
+        let volume = length * width * height;
         let ribbon = faces[0] + volume;
         result += ribbon;
-    } 
+    }
 
     result
 }
@@ -17,7 +21,7 @@ fn main() {
     //
     // !!!! Update with the expected result for the sample data !!!!
     //
-    let expected_sample_output = 34+14;
+    let expected_sample_output = 34 + 14;
 
     //
     // Print the specific puzzle info
