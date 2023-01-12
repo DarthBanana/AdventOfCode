@@ -1,4 +1,4 @@
-buttons = {(0, 0): 1, (1, 0): 2, (2, 0): 3, (0, 1): 4, (1, 1): 5, (2, 1): 6, (0, 2): 7, (1, 2): 8, (2, 2): 9}
+buttons = {(0, 0): '1', (1, 0): '2', (2, 0): '3', (0, 1): '4', (1, 1): '5', (2, 1): '6', (0, 2): '7', (1, 2): '8', (2, 2): '9'}
 directions = {'U': (0, -1), 'D': (0, 1), 'L': (-1, 0), 'R': (1, 0)}
 
 
@@ -12,14 +12,17 @@ def move(position, direction):
 
 
 def solve(instructions):
-    code = []
-    current_position = (1, 1)
+    code = ""
+    for k, v in buttons.items():
+        if v == '5':
+            current_position = k
+            break
 
     for line in instructions.splitlines():
         for c in line:
             current_position = move(current_position, c)
 
-        code.append(buttons[current_position])
+        code = code + buttons[current_position]
 
     print(code)
 

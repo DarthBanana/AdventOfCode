@@ -13,7 +13,7 @@ def move(position, direction):
 
 
 def solve(instructions):
-    code = []
+    code = ""
     for k, v in buttons.items():
         if v == '5':
             current_position = k
@@ -23,7 +23,7 @@ def solve(instructions):
         for c in line:
             current_position = move(current_position, c)
 
-        code.append(buttons[current_position])
+        code = code + buttons[current_position]
 
     print(code)
 
