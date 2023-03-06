@@ -1,0 +1,4 @@
+**** EXPECTED RESULT ****
+33583
+**** INPUT ****
+100756

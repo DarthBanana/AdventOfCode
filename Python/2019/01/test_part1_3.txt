@@ -1,0 +1,4 @@
+**** EXPECTED RESULT ****
+654
+**** INPUT ****
+1969
