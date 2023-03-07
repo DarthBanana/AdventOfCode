@@ -18,11 +18,14 @@ class Mailbox:
     def receive(self):
         if len(self.mailbox) == 0:
             return None
-        return self.mailbox.popleft()
+        result = self.mailbox.popleft()
+        if self.verbose:
+            print("RECV",result)
+        return result
     def __len__(self):
         return len(self.mailbox)
     def __str__(self):
-        return str(self.mailbox)
+        return str(list(self.mailbox))
     def reset(self):
         self.mailbox = deque()
     
@@ -48,13 +51,19 @@ class IntcodeComputer(ComputerRoot):
 
     def __getitem__(self, k): 
         if isinstance(k, Parameter):
+            #print("GET", k.raw, self.memory.get(k.raw, 0))
             return self.memory.get(k.raw, 0)
-        return self.memory.get(k, 0)
+        else:
+            value = self.memory.get(k, 0)
+            #print("GET", k, value)
+        return self.memory.get(k, 1)
 
     def __setitem__(self, k, value):                  
         if isinstance(k, Parameter):
+            #print("SET", k.raw, value)
             self.memory[k.raw] = value
         else:
+            #print("SET", k, value)
             self.memory[k] = value
 
     def is_ip_valid(self, ip):
@@ -75,7 +84,9 @@ class IntcodeComputer(ComputerRoot):
             elif mode == 1:
                 params.append(Parameter(param, param))
             elif mode == 2:
-                params.append(Parameter(param, self[param + self.relative_base]))
+                address = param + self.relative_base
+                #print("REL", param, self.relative_base, address, self[address])
+                params.append(Parameter(address, self[address]))
         return Instruction(instruction, func, params)
     
     
@@ -136,8 +147,10 @@ class MyIntcodeComputer(IntcodeComputer):
         else:
             self[z] = 0
         self.ip += 4
-    def srb(self, x):
+    def srb(self, x):        
         self.relative_base += x
+        if self.verbose:
+            print("relative base", self.relative_base)
         self.ip += 2
 
     def halt(self):

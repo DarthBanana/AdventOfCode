@@ -22,19 +22,33 @@ class Puzzle(AoCPuzzle):
         return val
 
     def part1(self):
-        tx_mailbox = Mailbox()
-        rx_mailbox = Mailbox()
+        tx_mailbox = Mailbox(True)
+        rx_mailbox = Mailbox(True)
         computer = MyIntcodeComputer(tx_mailbox, rx_mailbox)
         
         code = self.code.copy()        
         computer.load_program(code)
         computer.reset()
         tx_mailbox.send(1)
-        
+
         computer.run(True)
-        
+        if (self.is_test):
+            return str(rx_mailbox)
+        print(rx_mailbox)
         return self.check_diagnostic_output(rx_mailbox)
 
 
     def part2(self):
-        pass
+        tx_mailbox = Mailbox(True)
+        rx_mailbox = Mailbox(True)
+        computer = MyIntcodeComputer(tx_mailbox, rx_mailbox)
+        
+        code = self.code.copy()        
+        computer.load_program(code)
+        computer.reset()
+        tx_mailbox.send(2)
+
+        computer.run(False)
+
+        print(rx_mailbox)
+        return self.check_diagnostic_output(rx_mailbox)
