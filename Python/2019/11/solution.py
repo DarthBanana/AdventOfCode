@@ -17,6 +17,7 @@ class Puzzle(AoCPuzzle):
 
         self.computer.load_program(self.code)
         #self.computer.interpret_program()        
+        #assert(False)
         
         AoCPuzzle.__init__(self, lines, is_test)
         
@@ -25,7 +26,7 @@ class Puzzle(AoCPuzzle):
     def reset(self):
         self.map = InfiniteGridStack(' ')       
         self.robot_map = {}
-        #self.map.add_layer(self.robot_map) 
+        
         self.computer.reset()
         self.robot_location = Coord2D(0,0)
         self.robot_direction = Direction(UP)

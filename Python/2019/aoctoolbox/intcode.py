@@ -2,7 +2,7 @@ from computer import *
 from collections import deque
 
 
-class Parameter(int):
+class IntCodeParameter(Parameter):
     
     def __new__(self, mode, raw_value, address, value, destination=False):
         self.mode = mode
@@ -12,17 +12,12 @@ class Parameter(int):
         self.my_value = value
         if destination:
             self.my_value = address
-        return int.__new__(self, self.my_value)
+        return Parameter.__new__(self, raw_value, address, value, destination)
     
     def __init__(self, mode, raw_value, address, value, destination=False):
         self.mode = mode
-        self.raw = raw_value
-        self.address = address
-        self.destination = destination
-        self.my_value = value
-        if destination:
-            self.my_value = address        
-        int.__init__(self)
+        
+        return Parameter.__init__(self, raw_value, address, value, destination)
 
     def __str__(self):
         if self.mode == 0:
@@ -31,9 +26,6 @@ class Parameter(int):
             return "D{0}".format(self.raw)
         elif self.mode == 2:
             return "R{0}({1})".format(self.raw, int(self))
-        
-    def __repr__(self):
-        return str(self)
     
     def interpret(self):  
         #print("INTERPRET", self.mode, self.raw, self.address, int(self), self.destination)      
@@ -125,7 +117,11 @@ class IntcodeComputer(ComputerRoot):
             self.memory[k] = value
 
     def is_ip_valid(self, ip):
-        return 0 <= ip
+        if ip < 0:
+            return False
+        if ip not in self.memory:
+            return False
+        return True
     
     def get_parameter(self, ip, offset, mode, destination=False):
         raw_value = self[ip + offset]        
@@ -140,8 +136,14 @@ class IntcodeComputer(ComputerRoot):
             value = self[address]            
         else:
             raise Exception("Invalid mode {0}".format(mode))
-        return Parameter(mode, raw_value, address, value, destination)
+        return IntCodeParameter(mode, raw_value, address, value, destination)
 
+    def interpret_instruction(self, instruction):        
+        inst_descriptor = self.instruction_set[instruction.opcode]
+        format_string = inst_descriptor.format_string
+        params = instruction.params                
+        param_values = [p.interpret() for p in params]        
+        return format_string.format(*param_values)
 
     def get_instruction(self, ip):   
          
@@ -163,30 +165,9 @@ class IntcodeComputer(ComputerRoot):
 
         return Instruction(instruction, func, params, opcode)
     
-    def interpret_instruction(self, instruction):
-        inst_descriptor = self.instruction_set[instruction.opcode]
-        format_string = inst_descriptor.format_string
-        params = instruction.params                
-        param_values = [p.interpret() for p in params]        
-        return format_string.format(*param_values)
+    def advance_to_next_instruction(self, ip, instruction):
+        return ip + len(instruction.params) + 1
     
-    def interpret_program(self):
-        ip = 0
-        while self.is_ip_valid(ip):
-            if ip not in self.memory:
-                break
-            instruction = self.get_instruction(ip)
-            if instruction is None:
-                if ip in self.memory:
-                    print("Invalid opcode {0} at {1}".format(self.memory[ip], ip))
-                    ip += 1
-                    continue
-                else:
-                    break
-            #print(ip, instruction)
-            print(ip, ":\t", self.interpret_instruction(instruction))
-            ip += len(instruction.params) + 1
-
     
     
 class MyIntcodeComputer(IntcodeComputer):

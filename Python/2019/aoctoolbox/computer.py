@@ -8,6 +8,44 @@
 
 import operator
 
+
+class Parameter(int):
+    
+    def __new__(self, raw_value, address, value, destination=False):        
+        self.raw = raw_value
+        self.address = address
+        self.destination = destination
+        self.my_value = value
+        if destination:
+            self.my_value = address
+        return int.__new__(self, self.my_value)
+    
+    def __init__(self, raw_value, address, value, destination=False):        
+        self.raw = raw_value
+        self.address = address
+        self.destination = destination
+        self.my_value = value
+        if destination:
+            self.my_value = address        
+        int.__init__(self)
+
+    def __str__(self):        
+        return "{0}({1})".format(self.raw, int(self))
+        
+    def __repr__(self):
+        return str(self)
+    
+    def interpret(self):  
+        return str(self)
+
+class InstructionDescriptor:
+    def __init__(self, name, func, param_count, output_param_number, format_string):
+        self.param_count = param_count
+        self.output_param_number = output_param_number
+        self.name = name        
+        self.func = func
+        self.format_string = format_string
+    
 class Instruction:
     def __init__(self, name, func, params, opcode=None):
         self.name = name
@@ -15,7 +53,7 @@ class Instruction:
         self.params = params
         self.opcode = opcode
     def __str__(self):
-        output = str(self.name)        
+        output = "{}".format(self.name)
         for param in self.params:            
             output += " " + str(param)        
         return output
@@ -121,10 +159,31 @@ class ComputerRoot:
             if self.post_instruction(instruction):
                 self.running = False
                 break
-            
-
-
+    def advance_to_next_instruction(self, ip, instruction):
+        return ip + 1
     
+    def interpret_instruction(self, instruction):
+        return ""
+        inst_descriptor = self.instruction_set[instruction.opcode]
+        format_string = inst_descriptor.format_string
+        params = instruction.params                
+        param_values = [p.interpret() for p in params]        
+        return format_string.format(*param_values)
+    
+    def interpret_program(self):
+        ip = 0
+        while self.is_ip_valid(ip):
+            
+            instruction = self.get_instruction(ip)
+            if instruction is None:                
+                print(ip, ":\t !!!!! Invalid opcode {0} !!!!!".format(self.memory[ip]))
+                ip += 1
+                continue
+            
+            #print(ip, instruction)
+            print(ip, ":\t", self.interpret_instruction(instruction))
+
+            ip = self.advance_to_next_instruction(ip, instruction)
 
     
 class Computer:
