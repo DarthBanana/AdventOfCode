@@ -39,9 +39,7 @@ class Parameter(int):
         return str(self)
 
 class InstructionDescriptor:
-    def __init__(self, name, func, param_count, output_param_number, format_string):
-        self.param_count = param_count
-        self.output_param_number = output_param_number
+    def __init__(self, name, func, format_string):
         self.name = name        
         self.func = func
         self.format_string = format_string
@@ -68,7 +66,8 @@ class ComputerRoot:
         
         self.breakpoints = set()
         self.original_program = []
-        self.reset()
+        self.instruction_descriptors = {}
+        self.reset()        
 
     def reset(self):      
         self.verbose = False
@@ -162,8 +161,7 @@ class ComputerRoot:
     def advance_to_next_instruction(self, ip, instruction):
         return ip + 1
     
-    def interpret_instruction(self, instruction):
-        return ""
+    def interpret_instruction(self, instruction):        
         inst_descriptor = self.instruction_set[instruction.opcode]
         format_string = inst_descriptor.format_string
         params = instruction.params                

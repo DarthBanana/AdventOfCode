@@ -6,12 +6,6 @@ class IntCodeParameter(Parameter):
     
     def __new__(self, mode, raw_value, address, value, destination=False):
         self.mode = mode
-        self.raw = raw_value
-        self.address = address
-        self.destination = destination
-        self.my_value = value
-        if destination:
-            self.my_value = address
         return Parameter.__new__(self, raw_value, address, value, destination)
     
     def __init__(self, mode, raw_value, address, value, destination=False):
@@ -40,13 +34,12 @@ class IntCodeParameter(Parameter):
                 return "M(base + {0})".format(self.raw)
             return "(base + {0})".format(self.raw)
 
-class InstructionDescriptor:
+class IntcodeInstructionDescriptor(InstructionDescriptor):
     def __init__(self, name, func, param_count, output_param_number, format_string):
         self.param_count = param_count
         self.output_param_number = output_param_number
-        self.name = name        
-        self.func = func
-        self.format_string = format_string
+        
+        return InstructionDescriptor.__init__(self, name, func, format_string)
     
 
     
@@ -176,16 +169,16 @@ class MyIntcodeComputer(IntcodeComputer):
         self.rx_mailbox = rx_mailbox
         IntcodeComputer.__init__(self)
         self.instmap = {
-            1:InstructionDescriptor("add", self.add, 3, 3, "{2} = {0} + {1}"), 
-            2:InstructionDescriptor("mul", self.mul, 3, 3, "{2} = {0} * {1}"), 
-            3:InstructionDescriptor("rcv", self.rcv, 1, 1, "{0} = rx"),
-            4:InstructionDescriptor("tx", self.tx, 1, 0, "tx({0})"), 
-            5:InstructionDescriptor("jit", self.jit, 2, 0, "if {0} != 0: GOTO {1}"),
-            6:InstructionDescriptor("jif", self.jif, 2, 0, "if {0} == 0: GOTO {1}"),
-            7:InstructionDescriptor("lt", self.lt, 3, 3, "{2} = 1 if {0} < {1} else 0"),
-            8:InstructionDescriptor("eq", self.eq, 3, 3, "{2} = 1 if {0} == {1} else 0"),
-            9:InstructionDescriptor("srb", self.srb, 1, 0, "base += {0}"),
-            99:InstructionDescriptor("halt", self.halt, 0, 0, "halt")}
+            1:IntcodeInstructionDescriptor("add", self.add, 3, 3, "{2} = {0} + {1}"), 
+            2:IntcodeInstructionDescriptor("mul", self.mul, 3, 3, "{2} = {0} * {1}"), 
+            3:IntcodeInstructionDescriptor("rcv", self.rcv, 1, 1, "{0} = rx"),
+            4:IntcodeInstructionDescriptor("tx", self.tx, 1, 0, "tx({0})"), 
+            5:IntcodeInstructionDescriptor("jit", self.jit, 2, 0, "if {0} != 0: GOTO {1}"),
+            6:IntcodeInstructionDescriptor("jif", self.jif, 2, 0, "if {0} == 0: GOTO {1}"),
+            7:IntcodeInstructionDescriptor("lt", self.lt, 3, 3, "{2} = 1 if {0} < {1} else 0"),
+            8:IntcodeInstructionDescriptor("eq", self.eq, 3, 3, "{2} = 1 if {0} == {1} else 0"),
+            9:IntcodeInstructionDescriptor("srb", self.srb, 1, 0, "base += {0}"),
+            99:IntcodeInstructionDescriptor("halt", self.halt, 0, 0, "halt")}
         self.set_instruction_set(self.instmap)
 
 
