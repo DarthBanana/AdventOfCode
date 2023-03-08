@@ -21,12 +21,14 @@ class CoordND:
     def __init__(self, coord):
         self.coord = tuple(coord)
     
-    def manhattan_dist(self, other):
+    def manhattan_dist(self, other=None):
+        if other is None:
+            return sum(abs(value) for value in self.coord)
         return sum(abs(value1 - value2) for value1, value2 in zip(self.coord, other.coord))        
 
-    def dist(self, other):
+    def dist(self, other=None):
         return self.manhattan_dist(other)
-    def distance(self, other):
+    def distance(self, other=None):
         return self.manhattan_dist(other)
     def as_tuple(self):
         return self.coord
@@ -37,9 +39,9 @@ class CoordND:
     def __rmul__(self, other):
         return CoordND(tuple(map(lambda i: i * other, self.coord)))
     def __add__(self, other):
-        return CoordND(tuple(map(lambda i, j: i + j, zip(self.coord, other.coord))))
+        return CoordND(tuple(map(lambda i, j: i + j, self.coord, other.coord)))
     def __sub__(self, other):
-        return CoordND(tuple(map(lambda i, j: i - j, zip(self.coord, other.coord))))
+        return CoordND(tuple(map(lambda i, j: i - j, self.coord, other.coord)))
     def __truediv__(self, other):
         return CoordND(tuple(map(lambda i: i / other, self.coord)))
     def __floordiv__(self, other):
@@ -65,6 +67,14 @@ class CoordND:
             if self.coord[-i] > other.coord[-i]:
                 return False
         return False
+    
+    def __getitem__(self, k):        
+        return self.coord[k]
+
+    def __setitem__(self, k, value):       
+        coords = list(self.coord) 
+        coords[k] = value
+        self.coord = tuple(coords)
   
     def surrounding_coords(self):
         coords = [CoordND(i) for i in adjac(self.coord)]
