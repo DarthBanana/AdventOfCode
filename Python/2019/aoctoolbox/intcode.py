@@ -1,5 +1,63 @@
 from computer import *
 from collections import deque
+
+
+class Parameter(int):
+    
+    def __new__(self, mode, raw_value, address, value, destination=False):
+        self.mode = mode
+        self.raw = raw_value
+        self.address = address
+        self.destination = destination
+        self.my_value = value
+        if destination:
+            self.my_value = address
+        return int.__new__(self, self.my_value)
+    
+    def __init__(self, mode, raw_value, address, value, destination=False):
+        self.mode = mode
+        self.raw = raw_value
+        self.address = address
+        self.destination = destination
+        self.my_value = value
+        if destination:
+            self.my_value = address        
+        int.__init__(self)
+
+    def __str__(self):
+        if self.mode == 0:
+            return "I{0}({1})".format(self.raw, int(self))
+        elif self.mode == 1:
+            return "D{0}".format(self.raw)
+        elif self.mode == 2:
+            return "R{0}({1})".format(self.raw, int(self))
+        
+    def __repr__(self):
+        return str(self)
+    
+    def interpret(self):  
+        #print("INTERPRET", self.mode, self.raw, self.address, int(self), self.destination)      
+        if self.mode == 0:
+            return "M{0}".format(self.raw)
+        elif self.mode == 1:
+            if self.destination:
+                return "M{0}".format(self.raw)
+            return str(int(self))
+        elif self.mode == 2:
+            if self.destination:
+                return "M(base + {0})".format(self.raw)
+            return "(base + {0})".format(self.raw)
+
+class InstructionDescriptor:
+    def __init__(self, name, func, param_count, output_param_number, format_string):
+        self.param_count = param_count
+        self.output_param_number = output_param_number
+        self.name = name        
+        self.func = func
+        self.format_string = format_string
+    
+
+    
 class Mailbox:
     def __init__(self, verbose=False):
         self.mailbox = deque()
@@ -52,7 +110,7 @@ class IntcodeComputer(ComputerRoot):
     def __getitem__(self, k): 
         if isinstance(k, Parameter):
             #print("GET", k.raw, self.memory.get(k.raw, 0))
-            return self.memory.get(k.raw, 0)
+            return self.memory.get(k.address, 0)
         else:
             value = self.memory.get(k, 0)
             #print("GET", k, value)
@@ -61,33 +119,74 @@ class IntcodeComputer(ComputerRoot):
     def __setitem__(self, k, value):                  
         if isinstance(k, Parameter):
             #print("SET", k.raw, value)
-            self.memory[k.raw] = value
+            self.memory[k.address] = value
         else:
             #print("SET", k, value)
             self.memory[k] = value
 
     def is_ip_valid(self, ip):
-        return 0 <= ip 
+        return 0 <= ip
+    
+    def get_parameter(self, ip, offset, mode, destination=False):
+        raw_value = self[ip + offset]        
+        if mode == 0:
+            address = raw_value
+            value = self[address]            
+        elif mode == 1:
+            address = -1
+            value = raw_value            
+        elif mode == 2:
+            address = raw_value + self.relative_base
+            value = self[address]            
+        else:
+            raise Exception("Invalid mode {0}".format(mode))
+        return Parameter(mode, raw_value, address, value, destination)
 
-    def get_instruction(self, ip):        
+
+    def get_instruction(self, ip):   
+         
         instruction = self.memory[ip]
         opcode = instruction % 100
-        
-        func, param_count = self.instruction_set[opcode]
+        if opcode not in self.instruction_set:
+            return None
+        inst_descriptor = self.instruction_set[opcode]
+        func = inst_descriptor.func
+        param_count = inst_descriptor.param_count
+        output_param_index = inst_descriptor.output_param_number - 1
+                
         params = []
         for i in range(param_count):
-            param = self.memory[ip + 1 + i]
-            
-            mode = instruction % 10**(i+3) // 10**(i+2)
-            if mode == 0:
-                params.append(Parameter(param, self[param]))
-            elif mode == 1:
-                params.append(Parameter(param, param))
-            elif mode == 2:
-                address = param + self.relative_base
-                #print("REL", param, self.relative_base, address, self[address])
-                params.append(Parameter(address, self[address]))
-        return Instruction(instruction, func, params)
+            mode = instruction % 10**(i+3) // 10**(i+2)            
+            param = self.get_parameter(ip, i+1, mode, output_param_index == i)
+            params.append(param)
+            param = 0                    
+
+        return Instruction(instruction, func, params, opcode)
+    
+    def interpret_instruction(self, instruction):
+        inst_descriptor = self.instruction_set[instruction.opcode]
+        format_string = inst_descriptor.format_string
+        params = instruction.params                
+        param_values = [p.interpret() for p in params]        
+        return format_string.format(*param_values)
+    
+    def interpret_program(self):
+        ip = 0
+        while self.is_ip_valid(ip):
+            if ip not in self.memory:
+                break
+            instruction = self.get_instruction(ip)
+            if instruction is None:
+                if ip in self.memory:
+                    print("Invalid opcode {0} at {1}".format(self.memory[ip], ip))
+                    ip += 1
+                    continue
+                else:
+                    break
+            #print(ip, instruction)
+            print(ip, ":\t", self.interpret_instruction(instruction))
+            ip += len(instruction.params) + 1
+
     
     
 class MyIntcodeComputer(IntcodeComputer):
@@ -96,16 +195,16 @@ class MyIntcodeComputer(IntcodeComputer):
         self.rx_mailbox = rx_mailbox
         IntcodeComputer.__init__(self)
         self.instmap = {
-            1:(self.add, 3), 
-            2:(self.mul, 3), 
-            3:(self.rcv, 1),
-            4:(self.tx, 1), 
-            5:(self.jit, 2),
-            6:(self.jif, 2),
-            7:(self.lt, 3),
-            8:(self.eq, 3),
-            9:(self.srb, 1),
-            99:(self.halt, 0)}
+            1:InstructionDescriptor("add", self.add, 3, 3, "{2} = {0} + {1}"), 
+            2:InstructionDescriptor("mul", self.mul, 3, 3, "{2} = {0} * {1}"), 
+            3:InstructionDescriptor("rcv", self.rcv, 1, 1, "{0} = rx"),
+            4:InstructionDescriptor("tx", self.tx, 1, 0, "tx({0})"), 
+            5:InstructionDescriptor("jit", self.jit, 2, 0, "if {0} != 0: GOTO {1}"),
+            6:InstructionDescriptor("jif", self.jif, 2, 0, "if {0} == 0: GOTO {1}"),
+            7:InstructionDescriptor("lt", self.lt, 3, 3, "{2} = 1 if {0} < {1} else 0"),
+            8:InstructionDescriptor("eq", self.eq, 3, 3, "{2} = 1 if {0} == {1} else 0"),
+            9:InstructionDescriptor("srb", self.srb, 1, 0, "base += {0}"),
+            99:InstructionDescriptor("halt", self.halt, 0, 0, "halt")}
         self.set_instruction_set(self.instmap)
 
 

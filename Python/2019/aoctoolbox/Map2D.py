@@ -66,29 +66,69 @@ class Coord2D:
                 yield Coord2D(x,y)
 
 
-UP = Coord2D(0,-1)
-DOWN = Coord2D(0, 1)
-LEFT = Coord2D(-1, 0)
-RIGHT = Coord2D(1, 0)
+class Direction(Coord2D):
+    def __init__(self, direction):
+        Coord2D.__init__(self, direction.x, direction.y)
+    def __str__(self):
+        return DIRECTION_STRINGS[self]
+    def __repr__(self):
+        return DIRECTION_STRINGS[self]
+    def turn(self, degrees):
+        if degrees % 45 != 0:
+            raise Exception("Can only turn in 45 degree increments")
+        steps = degrees // 45
+        index = SURROUNDING.index(self)
+        assert(SURROUNDING[index] == self)
+        index = ((index + len(SURROUNDING)) + steps) % len(SURROUNDING)
+        new_dir = SURROUNDING[index]
+        self.x = new_dir.x
+        self.y = new_dir.y
+
+    def turn_left_90(self):
+        self.turn(-90)
+    def turn_right_90(self):
+        self.turn(90)
+    def turn_180(self):
+        self.turn(180)
+    
+UP = Direction(Coord2D(0,-1))
+DOWN = Direction(Coord2D(0, 1))
+LEFT = Direction(Coord2D(-1, 0))
+RIGHT = Direction(Coord2D(1, 0))
 N = UP
 S = DOWN
 E = RIGHT
 W = LEFT
-NE = Coord2D(1, -1)
-SE = Coord2D(1, 1)
-SW = Coord2D(-1, 1)
-NW = Coord2D(-1, -1)
+NE = Direction(Coord2D(1, -1))
+SE = Direction(Coord2D(1, 1))
+SW = Direction(Coord2D(-1, 1))
+NW = Direction(Coord2D(-1, -1))
+
+DIRECTION_STRINGS = {
+    N: "N",
+    S: "S",
+    E: "E",
+    W: "W",
+    NE: "NE",
+    SE: "SE",
+    SW: "SW",
+    NW: "NW"
+}
+
+
 
 SURROUNDING = [N, NE, E, SE, S, SW, W, NW]
 NEIGHBORS = [N, E, S, W]
 def TurnLeft90(Direction):
     index = SURROUNDING.index(Direction)
-    index = (index - 2) % len(SURROUNDING)
-    return SURROUNDING(index)
+    assert(SURROUNDING[index] == Direction)
+    index = ((index + len(SURROUNDING)) - 2) % len(SURROUNDING)
+    return SURROUNDING[index]
 def TurnRight90(Direction):
     index = SURROUNDING.index(Direction)
-    index = (index - 2) % len(SURROUNDING)
-    return SURROUNDING(index)
+    assert(SURROUNDING[index] == Direction)
+    index = (index + 2) % len(SURROUNDING)
+    return SURROUNDING[index]
     
 
 
@@ -138,6 +178,8 @@ class InfiniteGrid:
         self.map[k] = value
     def __hash__(self):
         return hash(frozenset(self.map.items()))
+    def __len__(self):
+        return len(self.map)
     def get_width(self):
         return (self.maxx + 1) - self.minx
     def get_height(self):

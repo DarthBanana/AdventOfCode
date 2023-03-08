@@ -9,10 +9,11 @@
 import operator
 
 class Instruction:
-    def __init__(self, name, func, params):
+    def __init__(self, name, func, params, opcode=None):
         self.name = name
         self.func = func
         self.params = params
+        self.opcode = opcode
     def __str__(self):
         output = str(self.name)        
         for param in self.params:            
@@ -253,15 +254,7 @@ class BunnyComputer(Computer):
         y_val = self.get_value(y)        
         self.ip += y_val
 
-class Parameter(int):
-    
-    def __new__(self, raw_value, value):        
-        self.raw = raw_value
-        return int.__new__(self, value)
-    def __str__(self):
-        return "{0}({1})".format(self.raw, int(self))
-    def __repr__(self):
-        return str(self)
+
 
 
         
