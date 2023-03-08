@@ -85,9 +85,6 @@ class IntcodeComputer(ComputerRoot):
         self.memory = {}
         for i in range(len(self.original_program)):
             self.memory[i] = self.original_program[i]
-            
-        
-        
 
     def set_instruction_set(self, instruction_set):
         self.instruction_set = instruction_set
@@ -137,11 +134,37 @@ class IntcodeComputer(ComputerRoot):
         params = instruction.params                
         param_values = [p.interpret() for p in params]        
         return format_string.format(*param_values)
+    
+    def get_input_parameter(self, id):
+        instruction = self.memory[self.ip]
+        
+        value = self[self.ip + id]
+        mode = instruction % 10**(id+2) // 10**(id+1)
+        
+        if mode == 0:
+            return self[value]
+        elif mode == 1:
+            return value
+        elif mode == 2:
+            return self[value + self.relative_base]
+        
+    def get_output_parameter(self, id):
+        instruction = self.memory[self.ip]
+        mode = instruction % 10**(id+2) // 10**(id+1)
+        value = self[self.ip + id]
+        if mode == 0:
+            return value
+        elif mode == 1:
+            return value
+        elif mode == 2:
+            return value + self.relative_base
 
     def get_instruction(self, ip):   
-         
+        
         instruction = self.memory[ip]
+
         opcode = instruction % 100
+        
         if opcode not in self.instruction_set:
             return None
         inst_descriptor = self.instruction_set[opcode]
@@ -150,11 +173,13 @@ class IntcodeComputer(ComputerRoot):
         output_param_index = inst_descriptor.output_param_number - 1
                 
         params = []
-        for i in range(param_count):
-            mode = instruction % 10**(i+3) // 10**(i+2)            
-            param = self.get_parameter(ip, i+1, mode, output_param_index == i)
-            params.append(param)
-            param = 0                    
+        
+        #for i in range(param_count):
+
+        #    mode = instruction % 10**(i+3) // 10**(i+2)            
+        #    param = self.get_parameter(ip, i+1, mode, output_param_index == i)
+        #    params.append(param)
+        #    param = 0                    
 
         return Instruction(instruction, func, params, opcode)
     
@@ -187,40 +212,59 @@ class MyIntcodeComputer(IntcodeComputer):
         self.rx_mailbox.reset()
         self.tx_mailbox.reset()
 
-    def add(self, x, y, z):
+    def add(self):
+        x = self.get_input_parameter(1)
+        y = self.get_input_parameter(2)
+        z = self.get_output_parameter(3)
         self[z] = x + y
         self.ip += 4
 
-    def mul(self, x, y, z):
+    def mul(self):
+        x = self.get_input_parameter(1)
+        y = self.get_input_parameter(2)
+        z = self.get_output_parameter(3)
         self[z] = x * y
         self.ip += 4
 
-    def jit(self, x, y):
+    def jit(self):
+        x = self.get_input_parameter(1)
+        y = self.get_input_parameter(2)
+        
         if x != 0:
             self.ip = y
         else:
             self.ip += 3
     
-    def jif(self, x, y):
+    def jif(self):
+        x = self.get_input_parameter(1)
+        y = self.get_input_parameter(2)        
         if x == 0:
             self.ip = y
         else:
             self.ip += 3
     
-    def lt(self, x, y, z):
+    def lt(self):
+        x = self.get_input_parameter(1)
+        y = self.get_input_parameter(2)
+        z = self.get_output_parameter(3)        
         if x < y:
             self[z] = 1
         else:
             self[z] = 0
         self.ip += 4
     
-    def eq(self, x, y, z):
+    def eq(self):
+        x = self.get_input_parameter(1)
+        y = self.get_input_parameter(2)
+        z = self.get_output_parameter(3)        
         if x == y:
             self[z] = 1
         else:
             self[z] = 0
         self.ip += 4
-    def srb(self, x):        
+    def srb(self):   
+        x = self.get_input_parameter(1)
+             
         self.relative_base += x
         if self.verbose:
             print("relative base", self.relative_base)
@@ -229,8 +273,8 @@ class MyIntcodeComputer(IntcodeComputer):
     def halt(self):
         self.ip = -1
 
-    def rcv(self, x):
-
+    def rcv(self):        
+        x = self.get_output_parameter(1)
         if len(self.rx_mailbox) == 0:
             self.enter_wait_state()
             if self.verbose:
@@ -239,6 +283,7 @@ class MyIntcodeComputer(IntcodeComputer):
         self[x] = self.rx_mailbox.receive()        
         self.ip += 2
 
-    def tx(self, x):        
+    def tx(self):  
+        x = self.get_input_parameter(1)
         self.tx_mailbox.send(x)
         self.ip += 2
