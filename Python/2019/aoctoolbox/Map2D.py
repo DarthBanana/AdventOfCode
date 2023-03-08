@@ -64,6 +64,7 @@ class Coord2D:
         for y in range(self.y, self.y+height):
             for x in range(self.x, self.x+width):            
                 yield Coord2D(x,y)
+    
 
 
 class Direction(Coord2D):
@@ -250,6 +251,8 @@ class InfiniteGrid:
         if (coord.x == minx) or (coord.x == maxx) or (coord.y == miny) or (coord.y == maxy):
             return True
         return False
+    def count(self, value):
+        return sum(1 for v in self.map.values() if v == value)  
 
 def rectangle_coords(x,y,width,height):
     for y1 in range(y, y+height):
