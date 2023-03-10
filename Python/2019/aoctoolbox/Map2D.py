@@ -146,6 +146,7 @@ class InfiniteGrid:
         self.miny = sys.maxsize
         self.maxy = -sys.maxsize -1 
         self.perimeter_type = PerimeterType.NONE
+        
     def __iter__(self):
         return self.map.__iter__()
 
@@ -182,8 +183,12 @@ class InfiniteGrid:
     def __len__(self):
         return len(self.map)
     def get_width(self):
+        if self.perimeter_type == PerimeterType.RECTANGLE:
+            return self.perimeter_maxx - self.perimeter_minx
         return (self.maxx + 1) - self.minx
     def get_height(self):
+        if self.perimeter_type == PerimeterType.RECTANGLE:
+            return self.perimeter_maxy - self.perimeter_miny
         return (self.maxy + 1) - self.miny
     def print(self, offset=0, max_y_size = 1000, max_x_size = 1000, default="."):
 
