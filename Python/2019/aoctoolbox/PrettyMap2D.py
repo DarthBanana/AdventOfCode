@@ -1,7 +1,8 @@
+import time
 from Map2D import *
 import pygame
 IMAGES = {}
-MAX_TILE_DIM = 20
+MAX_TILE_DIM = 40
 MIN_TILE_DIM = 8
 TILE_IMAGE_WIDTH = 20
 TILE_IMAGE_HEIGHT = 20
@@ -39,7 +40,7 @@ def get_sprite_image(value):
         IMAGES[(value, TILE_IMAGE_HEIGHT)] = sprite_image
     return sprite_image
 
-class Tile(pygame.sprite.DirtySprite):
+class Tile(pygame.sprite.Sprite):
     def __init__(self, value, x, y, map_left, map_top, minx, miny):
         super().__init__()
         
@@ -60,41 +61,61 @@ class Tile(pygame.sprite.DirtySprite):
         self.image = get_sprite_image(self.value)
         self.rect = self.image.get_rect()
         self.rect.x = map_left + ((self.x - minx) * TILE_IMAGE_WIDTH)
-        self.rect.y = map_top + ((self.y-miny) * TILE_IMAGE_HEIGHT)    
+        self.rect.y = map_top + ((self.y-miny) * TILE_IMAGE_HEIGHT)   
+        self.source_rect = self.image.get_rect() 
+        self.source_rect.x = map_left
+        self.source_rect.y = map_top
         self.dirty = True
 
+def render_thread(grid):
+    while True:
+        print("render_thread")
+        grid.check_events()
+        grid.refresh()
+        print("render_thread done")
+        time.sleep(0.1)
 
 class PrettyInfiniteGrid(InfiniteGrid):
     def __init__(self):
         super().__init__()
         self.characters = {}
         self.sprites = {}
-        self.render_group = pygame.sprite.Group()       
-        self.screen = pygame.display.set_mode((1024, 768))
+        self.render_group = pygame.sprite.RenderPlain()       
+        self.screen = pygame.display.set_mode((1024, 768), pygame.RESIZABLE)
         self.last_width = None
         self.last_height= None
         self.map_left = 0
         self.map_top = 0
+        self.rescale(1,1)
+
 
 
     def __setitem__(self, k, value):  
-        print("Setting ", k, " to ", value)
+        #print("Setting ", k, " to ", value)
         super().__setitem__(k, value)                
         if k in self.sprites:
             sprite = self.sprites[k]
+            #sprite.remove(self.render_group)
             sprite.set_value(value)
         else:
+                    
             sprite = Tile(value, k.x, k.y, self.map_left, self.map_top, self.minx, self.miny)
             self.sprites[k] = sprite
+            sprite.groups = self.render_group
             self.render_group.add(sprite)
-            #sprite.groups = self.render_group
+        
         
         self.refresh()
 
     def rescale(self, width, height):
-        print("Rescaling to ", width, height)
+        #print("Rescaling to ", width, height)
+        print(self.render_group)
         screen_width = self.screen.get_width()
         screen_height = self.screen.get_height()
+        #self.background = pygame.Surface(self.screen.get_size())
+        #self.background = self.background.convert()
+        #self.background.fill((0, 0, 50))        
+
         tile_width = screen_width // width
         tile_height = screen_height // height
         tile_dim = min(tile_width, tile_height, MAX_TILE_DIM)
@@ -109,30 +130,37 @@ class PrettyInfiniteGrid(InfiniteGrid):
             self.map_top = (screen_height - map_height) // 2
         else:
             self.map_top = 0
-        print(self.map_left, self.map_top)
+        #print(self.map_left, self.map_top)
         upate_tile_size(tile_dim)
         self.render_group.update(self.map_left, self.map_top, self.minx, self.miny)
+        #self.render_group.clear(self.screen, self.background)
 
-            
-
-    def refresh(self):        
+    def check_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.VIDEORESIZE:
                 self.screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
-                
+                self.rescale(self.get_width(), self.get_height())
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
+
+    def refresh(self):           
+        self.check_events()     
         new_width = self.get_width()
         new_height = self.get_height()
         if self.last_width != new_width or self.last_height != new_height:
             self.rescale(new_width, new_height)
             self.last_width = new_width
             self.last_height = new_height
-
+        
+        
+        #self.render_group.clear(self.screen, self.background)
+        #rects = self.render_group.draw(self.screen)
+        self.screen.fill((0, 0, 0))
         pygame.sprite.Group.draw(self.render_group, self.screen)
-        pygame.display.update()
+        pygame.display.flip()
+    
