@@ -1,4 +1,4 @@
-from PrettyMap2D import *
+from PrettyMap2D2 import *
 
 
 print("Hello World!")

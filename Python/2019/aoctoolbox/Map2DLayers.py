@@ -3,6 +3,9 @@ import itertools
 import sys
 from Map2D import *
 
+class GridLayer(dict):
+    def __init__(self):
+        dict.__init__(self)
     
 class InfiniteGridStack(InfiniteGrid):
     def __init__(self, default = 0):

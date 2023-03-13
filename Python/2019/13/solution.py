@@ -6,7 +6,7 @@ import os
 from time import sleep
 from aocpuzzle import *
 from intcode import *
-from Map2D import *
+from PrettyMap2D import *
 from parsehelp import get_all_ints
 
 class Puzzle(AoCPuzzle):
@@ -26,7 +26,7 @@ class Puzzle(AoCPuzzle):
         self.output_mailbox.reset()
         self.computer.reset()
         
-        self.map = InfiniteGrid()
+        self.map = PrettyInfiniteGrid()
 
     def run_program(self):
         self.computer.run()
@@ -98,7 +98,7 @@ class Puzzle(AoCPuzzle):
             
     def part1(self):
         self.run_program()
-        self.map.print()
+        #self.map.print()
         return self.map.count('X')
 
     def part2(self):

@@ -1,6 +1,4 @@
 from enum import Enum
-import itertools
-import sys
 
 
 def adjac(ele, sub = ()):
@@ -21,33 +19,64 @@ class CoordND:
     def __init__(self, coord):
         self.coord = tuple(coord)
     
-    def manhattan_dist(self, other=None):
+    def manhattan_distance(self, other=None):
         if other is None:
             return sum(abs(value) for value in self.coord)
         return sum(abs(value1 - value2) for value1, value2 in zip(self.coord, other.coord))        
-
-    def dist(self, other=None):
-        return self.manhattan_dist(other)
-    def distance(self, other=None):
-        return self.manhattan_dist(other)
+    manhattan_dist = manhattan_distance
+    dist = manhattan_distance
+    distance = manhattan_distance
     def as_tuple(self):
         return self.coord
     
     def __mul__(self, other):
         return CoordND(tuple(map(lambda i: i * other, self.coord)))
+    
+    def __imul__(self, other):
+        self.coord = tuple(map(lambda i: i * other, self.coord))
+        return self
         
     def __rmul__(self, other):
         return CoordND(tuple(map(lambda i: i * other, self.coord)))
+    
+    def __irmul__(self, other):
+        self.coord = tuple(map(lambda i: i * other, self.coord))
+        return self
+
     def __add__(self, other):
         return CoordND(tuple(map(lambda i, j: i + j, self.coord, other.coord)))
+    
+    def __iadd__(self, other):
+        self.coord = tuple(map(lambda i, j: i + j, self.coord, other.coord))
+        return self
+    
     def __sub__(self, other):
         return CoordND(tuple(map(lambda i, j: i - j, self.coord, other.coord)))
+    
+    def __isub__(self, other):
+        self.coord = tuple(map(lambda i, j: i - j, self.coord, other.coord))
+        return self
+    
     def __truediv__(self, other):
         return CoordND(tuple(map(lambda i: i / other, self.coord)))
+    
+    def __itruediv__(self, other):
+        self.coord = tuple(map(lambda i: i / other, self.coord))
+        return self
+    
     def __floordiv__(self, other):
         return CoordND(tuple(map(lambda i: i // other, self.coord)))
+    
+    def __ifloordiv__(self, other):
+        self.coord = tuple(map(lambda i: i // other, self.coord))
+        return self
+    
     def __mod__(self, other):
         return CoordND(tuple(map(lambda i: i % other, self.coord)))
+    
+    def __imod__(self, other):
+        self.coord = tuple(map(lambda i: i % other, self.coord))
+        return self
 
     def __str__(self):        
         return str(self.coord)
@@ -57,6 +86,7 @@ class CoordND:
 
     def __hash__(self):
         return hash(self.as_tuple())
+    
     def __eq__(self, other):
         return self.coord == other.coord
         
