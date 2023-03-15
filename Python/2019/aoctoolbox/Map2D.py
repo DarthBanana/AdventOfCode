@@ -47,16 +47,22 @@ class PointerOverlay(Map2DOverlay):
         
 class Map2D:
     def __init__(self, default = 0):
-        self.map = {}
+        
         self.default = default
+        
+        self.perimeter_type = PerimeterType.NONE
+        self.overlays = []
+        self.pointer_overlay = None
+        self.clear()
+    def clear(self):
+        self.map = {}
         self.minx = sys.maxsize
         self.maxx = -sys.maxsize - 1
         self.miny = sys.maxsize
         self.maxy = -sys.maxsize -1 
-        self.perimeter_type = PerimeterType.NONE
-        self.overlays = []
-        self.pointer_overlay = None
-        
+        for overlay in self.overlays:
+            overlay.clear()
+
     def __iter__(self):
         return self.map.__iter__()    
     

@@ -185,3 +185,5 @@ def TurnRight90(Direction):
     index = (index + 2) % len(SURROUNDING)
     return SURROUNDING[index]
     
+turn_left = TurnLeft90
+turn_right = TurnRight90
