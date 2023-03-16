@@ -150,45 +150,41 @@ class Puzzle(AoCPuzzle):
 
         return reduced_graph
 
-
-        
-        
-
-                
-
     def bfs_b(self, reduced_graph):
         keys_left = self.keys
         history = {}
-        queue = []
+        queue = deque()
         print(reduced_graph)
         queue.append(("@", keys_left, 0, []))
         print(reduced_graph["@"])
+        best_steps = 10000000000
+        best_path = None
         while(len(queue)):
-            queue.sort(key=lambda x: x[2], reverse=True)
-            (poi, keys_left, steps, path) = queue.pop()
+            (poi, keys_left, steps, path) = queue.popleft()
             
-            if len(keys_left) == 0:
-                return (steps, path)
-            #print(reduced_graph[poi])
+            if len(keys_left) == 0:  
+                if steps < best_steps:
+                    best_steps = steps
+                    best_path = path
+                continue
+
             keys_hash = list(keys_left)
             keys_hash.sort()
             keys_hash = tuple(keys_hash)
-            #print (keys_hash, path)
+            
             if (poi, keys_hash) in history:
                 if history[(poi, keys_hash)] <= steps:
                     continue
             history[(poi, keys_hash)] = steps
             
-            for n in reduced_graph[poi]:
-                #print(n, reduced_graph[poi][n]["weight"])
+            for n in reduced_graph[poi]:                
                 if n in self.doors:
                     if n.lower() in keys_left:
-                        continue                
-                #print(n)
+                        continue                                
                 queue.append((n, keys_left - set(n), steps + reduced_graph[poi][n]["weight"], path + [n]))
 
 
-
+        return (best_steps, best_path)
         
 
 
