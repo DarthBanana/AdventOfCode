@@ -71,9 +71,40 @@ class Map2D:
         self.maxy = -sys.maxsize - 1
         for overlay in self.overlays:
             overlay.clear()
+    
+    def top_right(self):
+        return Coord2D(self.maxx, self.miny)
+
+    def top_left(self):
+        return Coord2D(self.minx, self.miny)
+
+    def bottom_left(self):
+        return Coord2D(self.minx, self.maxy)
+    def bottom_right(self):
+        return Coord2D(self.maxx, self.maxy)
+    def corner(self, direction):
+        if direction == NW:
+            return self.top_left()
+        if direction == NE:
+            return self.top_right()
+        if direction == SW:
+            return self.bottom_left()
+        if direction == SE:
+            return self.bottom_right()
+        
+        
+
 
     def __iter__(self):
         return self.map.__iter__()
+
+    def get_sub_map(self, point_a, point_b):
+        top_left = Coord2D(min(point_a.x, point_b.x), min(point_a.y, point_b.y))
+        bottom_right = Coord2D(max(point_a.x, point_b.x), max(point_a.y, point_b.y))
+        new_map = Map2D(self.default)
+        for coord in top_left.rectangle_tl_lr_coords(bottom_right):
+            new_map[coord-top_left] = self[coord]
+        return new_map
 
     def get_new_overlay(self, altitude):
         return Map2DOverlay(self, altitude)

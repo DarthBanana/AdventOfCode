@@ -110,6 +110,10 @@ class Coord2D(CoordND):
         for y in range(self.y, self.y+height):
             for x in range(self.x, self.x+width):            
                 yield Coord2D(x,y)
+    def rectangle_tl_lr_coords(self, lr):
+        for y in range(self.y, lr.y+1):
+            for x in range(self.x, lr.x+1):            
+                yield Coord2D(x,y)
     
 
 
