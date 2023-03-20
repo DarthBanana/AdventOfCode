@@ -37,6 +37,12 @@ class SpriteSource():
         self.images = {}
         self.width = TILE_IMAGE_WIDTH
         self.heigth = TILE_IMAGE_WIDTH
+        self.sizes = {}
+        for i in range(MIN_TILE_DIM, MAX_TILE_DIM+1):
+            font = pygame.font.SysFont('Courrier', i)
+            width = font.size("#")[0]
+            height = font.size("#")[1]
+            self.sizes[i] = (width, height)            
 
     def upate_tile_size(self, width, height):
         
@@ -44,13 +50,21 @@ class SpriteSource():
         global TILE_IMAGE_WIDTH
         global TILE_IMAGE_HEIGHT
         tile_dim = min(width, height, MAX_TILE_DIM)
-        tile_dim = max(tile_dim, MIN_TILE_DIM)        
+        tile_dim = max(tile_dim, MIN_TILE_DIM)   
+            
+        best_size = MIN_TILE_DIM        
+        for dim in range(MIN_TILE_DIM, MAX_TILE_DIM + 1):
+            (w, h) = self.sizes[dim]            
+            if w > width or h > height:
+                break
+            best_size = dim
 
-        font = pygame.font.SysFont('Courrier', tile_dim)
+        font = pygame.font.SysFont('Courrier', best_size)
         TILE_IMAGE_WIDTH = font.size("#")[0]
         TILE_IMAGE_HEIGHT = font.size("#")[1]
         self.width = TILE_IMAGE_WIDTH
         self.height = TILE_IMAGE_HEIGHT
+        
 
     def generate_sprite_image(self, value, width, height):
         sprite_image = display_text(str(value), width, height, (200,200,200))  
@@ -90,7 +104,8 @@ class Tile(pygame.sprite.Sprite):
     def update(self, map_left, map_top, minx, miny):
         self.image = self.sprite_source.get_sprite_image(self.value)
         self.rect = self.image.get_rect()
-        
+        assert(self.rect)
+        #print(map_left, self.x, minx, self.sprite_source.width)
         self.rect.x = map_left + ((self.x - minx) * self.sprite_source.width)
         self.rect.y = map_top + ((self.y-miny) * self.sprite_source.height)   
         self.source_rect = self.image.get_rect() 
@@ -133,15 +148,21 @@ class PrettyMap2DOverlay(Map2DOverlay):
 
 class PrettyMap2D(Map2D):
     def __init__(self, default=" ", sprite_source=None):
-        super().__init__(default)      
         if sprite_source is None:
             sprite_source = SpriteSource()
         self.sprite_source = sprite_source
         self.autodraw = True  
         self.sprites = {}
-        self.render_group = pygame.sprite.RenderPlain()       
-        self.overlay_group = pygame.sprite.RenderPlain()
         self.screen = pygame.display.set_mode((1024, 768), pygame.RESIZABLE)
+        super().__init__(default)      
+        #self.reset()
+
+    #def reset(self):
+        
+    def clear(self):
+        super().clear()
+        self.render_group = pygame.sprite.RenderPlain()       
+        self.overlay_group = pygame.sprite.RenderPlain()        
         self.last_width = None
         self.last_height= None
         self.map_left = 0
@@ -149,7 +170,7 @@ class PrettyMap2D(Map2D):
         self.rescale(1,1)
         self.pointer = None
 
-    
+
     def get_new_overlay(self, altitude):
         print("new_overlay")
         return PrettyMap2DOverlay(self, altitude)
@@ -185,15 +206,17 @@ class PrettyMap2D(Map2D):
 
     def rescale(self, width, height):
         #print("Rescaling to ", width, height)        
+        width = max(width, 1)
+        height = max(height, 1)
         screen_width = self.screen.get_width()
         screen_height = self.screen.get_height()
 
         tile_width = screen_width // width
         tile_height = screen_height // height
-
+        #print(tile_width, tile_height)
         self.sprite_source.upate_tile_size(tile_width, tile_height)
         map_width = width * self.sprite_source.width
-        map_height = height * self.sprite_source.height
+        map_height = height * self.sprite_source.height        
         if map_width < screen_width:
             self.map_left = (screen_width - map_width) // 2
         else:

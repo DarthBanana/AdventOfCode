@@ -1,6 +1,8 @@
 from computer import *
 from collections import deque
 
+from parsehelp import get_all_ints
+
 VARIABLE_NAMES = {}
 NAME_CANDIDATES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 VARIABLE_NAME_INDEX = 0
@@ -238,6 +240,10 @@ class IntcodeComputer(ComputerRoot):
         self.memory = {}
         for i in range(len(self.original_program)):
             self.memory[i] = self.original_program[i]
+
+    def load_program_from_input(self, lines):
+        code = get_all_ints(lines[0])
+        self.load_program(code)
 
     def set_instruction_set(self, instruction_set):
         self.instruction_set = instruction_set

@@ -178,12 +178,18 @@ class Map2D:
     def get_width(self):
         if self.perimeter_type == PerimeterType.RECTANGLE:
             return self.perimeter_maxx - self.perimeter_minx
-        return (self.maxx + 1) - self.minx
+        width = (self.maxx + 1) - self.minx
+        if width < 0:
+            return 0
+        return width
 
     def get_height(self):
         if self.perimeter_type == PerimeterType.RECTANGLE:
             return self.perimeter_maxy - self.perimeter_miny
-        return (self.maxy + 1) - self.miny
+        height = (self.maxy + 1) - self.miny
+        if height < 0:
+            return 0
+        return height
 
     def print(self, offset=0, max_y_size=1000, max_x_size=1000, default="."):
 
