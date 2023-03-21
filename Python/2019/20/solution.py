@@ -10,6 +10,30 @@ from mapgraph import *
 ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 DRAW_RESULT = False
 DRAW_RESULT_2 = True
+NAMES = set()
+class POI():
+    def __init__(self, name, coord, outside, terminal = False):
+        if not terminal:
+            if outside:
+                self.name = name + "o"
+                self.other_name = name + "i"
+            else:
+                self.name = name + "i"
+                self.other_name = name + "o"
+        else:
+            self.name = name
+            self.other_name = None
+        self.outside = outside
+        self.coord = coord
+        self.terminal = terminal
+        self.partner_coord = None
+        self.partner_name = None
+        self.paths = None
+
+
+
+
+
 
 class Puzzle(AoCPuzzle):
     
@@ -31,6 +55,7 @@ class Puzzle(AoCPuzzle):
         self.map[self.portals["AA"][0]] = "#"
         self.exit = self.portals["ZZ"][1]
         self.map.print()
+
             
 
     def is_portal(self, coord):
@@ -55,7 +80,10 @@ class Puzzle(AoCPuzzle):
         return None
         
     def find_wormholes(self):        
-        self.pairs = []        
+        self.pairs = []
+        self.pois = []
+
+
         for a in self.map:
             result = self.is_portal(a)
             if not result:
@@ -64,20 +92,28 @@ class Puzzle(AoCPuzzle):
             (name, start, end) = result
             if a.x == self.map.minx or a.x == self.map.maxx or a.y == self.map.miny or a.y == self.map.maxy:
                 outside_portal = True
-
+            terminal = False
+            if name == "AA" or name == "ZZ":
+                terminal = True
+            
+            self.pois.append(POI(name, end, outside_portal, terminal))
             if name in self.portals:
                 (other_start, other_end, outside) = self.portals[name]
                 self.wormholes[start] = (outside_portal, other_end)
                 self.wormholes[other_start] = (outside, end)
-                self.pairs.append((end, other_end))
+                self.pairs.append((name, end, other_end))
             else:
                 self.portals[name] = (start,end, outside_portal)
 
     def apply_wormholes(self):
         #for start, end in self.wormholes.items():
             #self.map.create_wormhole(start, end)
+        self.poi_table = {}
         for p in self.pairs:
-            self.graph.add_edge(p[0], p[1])
+            self.graph.add_edge(p[1], p[2])
+        for p in self.pois:
+            self.poi_table[p.name] = p
+
 
 
     def part1(self):
@@ -91,6 +127,65 @@ class Puzzle(AoCPuzzle):
                 self.map.refresh()
         return len(path) - 1
     
+    def find_paths_from_poi(self, poi):        
+        paths = []
+        for p in self.pois:
+            if p == poi:
+                continue
+            if nx.has_path(self.graph, poi.coord, p.coord):
+                length = nx.shortest_path_length(self.graph, poi.coord, p.coord)
+                paths.append((p.name, length))
+        return paths
+
+
+    def p2_reduced_graph(self):                
+
+        for p in self.pois:
+            
+            p.paths = self.find_paths_from_poi(p)
+            
+
+    def p2_bfs2(self):
+        p = self.poi_table["AA"]
+        visited = {}
+        queue = []
+        location = (0, p.name)
+
+        queue.append((location, 0, []))
+        best_length = 10000000000
+        best_path = None
+        while (len(queue) > 0):
+            queue.sort(key=lambda x: x[1], reverse=True)
+            (location, steps, path) = queue.pop()
+            
+            if location[1] == "ZZ":
+                if steps < best_length:
+                    best_length = steps
+                    best_path = path
+                break
+            if location in visited:
+                if visited[location] <= steps:
+                    continue
+            visited[location] = steps
+            
+            poi = self.poi_table[location[1]]
+            for (p, distance) in poi.paths:
+                new_location = (location[0], p)
+                queue.append((new_location, steps + distance, path + [p]))
+            if not poi.terminal:
+                if poi.outside:
+                    depth = (location[0] - 1 )
+                    if depth < 0:
+                        continue
+                    new_location = (depth, poi.other_name)
+                else:                    
+                    new_location = (location[0] + 1, poi.other_name)
+                    
+                
+                queue.append((new_location, steps + 1, path + [poi.other_name]))
+        return (best_length, best_path)
+
+
     def p2_bfs(self):
         last = -2
         goal = (0, self.exit)
@@ -138,6 +233,11 @@ class Puzzle(AoCPuzzle):
                 assert(self.map[n] == ".")
                 queue.append((new_location, steps + 1, path + [new_location]))
         assert(False)
+
+    def part2b(self):
+        # Doesn't work.  Maybe come back to it.
+        self.p2_reduced_graph()
+        return self.p2_bfs2()
 
     def part2(self):
         (steps, path) = self.p2_bfs()
