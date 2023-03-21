@@ -213,12 +213,13 @@ class ComputerRoot:
             ip = self.advance_to_next_instruction(ip, instruction)
 
 
-class Computer:
+class Computer(ComputerRoot):
     def __init__(self):
-        self.reset()
-        pass
+        super().__init__()
+        
 
     def reset(self):
+        super().reset()
         self.registers = {}
         self.ip = 0
 
@@ -270,30 +271,16 @@ class Computer:
             return self.get_register(param)
         else:
             return int(param)
+    
+    def is_ip_valid(self, ip):
+        if 0 <= ip < len(self.instructions):            
+            return True
+        return False
 
-    def print_instruction(self, ip):
-        instruction = self.instructions[ip]
-        print(ip, ":", instruction.name, end="")
-        for param in instruction.params:
-            print(" ", param, end="")
-        print()
+    def get_instruction(self, ip):
+        return self.instructions[ip]
 
-    def pre_instruction(self):
-        pass
-
-    def post_instruction(self):
-        pass
-
-    def run(self, verbose=False):
-        while 0 <= self.ip < len(self.instructions):
-            if (self.pre_instruction()):
-                break
-            if (verbose):
-                self.print_instruction(self.ip)
-            inst = self.instructions[self.ip]
-            inst.func(*inst.params)
-            self.post_instruction()
-
+    
 
 class BunnyComputer(Computer):
     def add(self, x, y):

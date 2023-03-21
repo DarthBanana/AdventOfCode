@@ -280,9 +280,16 @@ class IntcodeComputer(ComputerRoot):
 
 
 class MyIntcodeComputer(IntcodeComputer):
-    def __init__(self, rx_mailbox, tx_mailbox):
-        self.tx_mailbox = tx_mailbox
-        self.rx_mailbox = rx_mailbox
+    def __init__(self, rx_mailbox = None, tx_mailbox = None):
+        if tx_mailbox:
+            self.tx_mailbox = tx_mailbox
+        else:
+            self.tx_mailbox = Mailbox()
+        if rx_mailbox:            
+            self.rx_mailbox = rx_mailbox
+        else:
+            self.rx_mailbox = Mailbox()
+            
         IntcodeComputer.__init__(self)
         self.instmap = {
             1: IntcodeInstructionDescriptor("add", self.add, 3, 3, "{2} = {0} + {1}"),
