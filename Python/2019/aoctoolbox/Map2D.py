@@ -61,7 +61,12 @@ class Map2D:
         self.perimeter_type = PerimeterType.NONE
         self.overlays = []
         self.pointer_overlay = None
+        self.invalid = set("#")
+        self.wormholes = {}
         self.clear()
+
+    def refresh(self):
+        pass
 
     def clear(self):
         self.map = {}
@@ -92,7 +97,30 @@ class Map2D:
         if direction == SE:
             return self.bottom_right()
         
+    def teleport(self, coord):
+        return self.wormholes.get(coord, coord)
         
+
+    def valid_neighbors(self, coord):
+        for n in coord.neighbors():
+            tn = self.teleport(n)
+            val = self[tn]
+            if val in self.invalid:
+                continue
+
+            yield((tn, val))
+    
+    def valid_surrounding(self, coord):
+        for n in coord.surrounding_coords():
+            tn = self.teleport(n)
+            val = self[tn]
+            if val in self.invalid:
+                yield((tn, val))
+
+    def create_wormhole(self, start, end, bidirectional=False):
+        self.wormholes[start] = end
+        if bidirectional:
+            self.wormholes[end] = start
 
 
     def __iter__(self):
