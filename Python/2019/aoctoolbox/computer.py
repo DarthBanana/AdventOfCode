@@ -7,6 +7,7 @@
 #
 
 import operator
+import threading
 
 
 class Parameter(int):
@@ -145,7 +146,7 @@ class ComputerRoot:
             return False
         return True
 
-    def run(self, verbose=False):
+    def run(self, verbose=False, instruction_count=-1):
         self.running = True
         self.verbose = verbose
         while self.running:
@@ -183,6 +184,10 @@ class ComputerRoot:
             instruction.execute()
 
             if self.post_instruction(instruction):
+                self.running = False
+                break
+            instruction_count -= 1
+            if instruction_count == 0:
                 self.running = False
                 break
 
@@ -280,7 +285,6 @@ class Computer(ComputerRoot):
     def get_instruction(self, ip):
         return self.instructions[ip]
 
-    
 
 class BunnyComputer(Computer):
     def add(self, x, y):

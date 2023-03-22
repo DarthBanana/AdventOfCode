@@ -281,14 +281,15 @@ class IntcodeComputer(ComputerRoot):
 
 class MyIntcodeComputer(IntcodeComputer):
     def __init__(self, rx_mailbox = None, tx_mailbox = None):
-        if tx_mailbox:
-            self.tx_mailbox = tx_mailbox
-        else:
+        if tx_mailbox == None:            
             self.tx_mailbox = Mailbox()
-        if rx_mailbox:            
-            self.rx_mailbox = rx_mailbox
         else:
+            self.tx_mailbox = tx_mailbox
+            
+        if rx_mailbox == None:   
             self.rx_mailbox = Mailbox()
+        else:
+            self.rx_mailbox = rx_mailbox
             
         IntcodeComputer.__init__(self)
         self.instmap = {
