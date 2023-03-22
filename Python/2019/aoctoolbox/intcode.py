@@ -8,7 +8,6 @@ NAME_CANDIDATES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 VARIABLE_NAME_INDEX = 0
 MAP_VARIABLE_NAMES = False
 
-
 def new_variable():
     global VARIABLE_NAME_INDEX
     repeats = VARIABLE_NAME_INDEX // len(NAME_CANDIDATES)
@@ -386,3 +385,32 @@ class MyIntcodeComputer(IntcodeComputer):
         x = params[0]
         self.tx_mailbox.send(x)
         self.ip += 2
+
+
+class InteractiveAsciiComputer():
+    def __init__(self, computer):
+        self.computer = computer
+
+    def run(self):
+        while self.computer.can_continue():
+            self.computer.run()
+            while len(self.computer.tx_mailbox) > 0:
+                v = self.computer.tx_mailbox.receive()
+                print(chr(v), end="")
+            print()
+            data = input("=> ")
+            for c in data:
+                self.computer.rx_mailbox.send(ord(c))
+            self.computer.rx_mailbox.send(10)
+    def feed(self, data):
+        for c in data:
+            self.computer.rx_mailbox.send(ord(c))
+        
+    def get_output(self):
+        output = ""
+        while len(self.computer.tx_mailbox) > 0:
+            v = self.computer.tx_mailbox.receive()
+            output += chr(v)
+        return output
+
+
