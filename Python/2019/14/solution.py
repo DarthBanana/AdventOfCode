@@ -17,6 +17,7 @@ class Reaction(object):
         
         self.output = (int(output[0]), output[1])
         self.normalized_inputs = [(input[0] / self.output[0], input[1]) for input in self.inputs]
+
     def __str__(self):
         return self.line
     def __repr__(self):
@@ -24,7 +25,7 @@ class Reaction(object):
 
 class Puzzle(AoCPuzzle):
     def __init__(self, lines, is_test=False):
-        AoCPuzzle.__init__(self, lines, is_test)
+        AoCPuzzle.__init__(self, lines, is_test)        
         self.reactions = {}
         for line in lines:
             reaction = Reaction(line)
@@ -37,18 +38,17 @@ class Puzzle(AoCPuzzle):
         if chemical == 'ORE':
             return need
         
-        reaction = self.reactions[chemical]
+        reaction = self.reactions[chemical]        
         
-        
-        for input in reaction.normalized_inputs:
+        for input in reaction.normalized_inputs:            
             self.needs[input[1]] = self.needs.get(input[1], 0) + input[0] * need
-            self.get_ore_count2(input[1], input[0] *need)
-
+            self.get_chemical_needs_fp(input[1], input[0] *need)
         
         return 
 
 
     def get_ore_count(self, chemical, needed):
+        
         if chemical in self.spares:
             if self.spares[chemical] >= needed:
                 self.spares[chemical] -= needed
@@ -69,6 +69,7 @@ class Puzzle(AoCPuzzle):
         if reactions_needed * reaction.output[0] > needed:
             self.spares[chemical] = reactions_needed * reaction.output[0] - needed        
         return ore_count
+    
     def part1(self):
 
         return self.get_ore_count('FUEL', 1)

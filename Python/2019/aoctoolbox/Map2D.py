@@ -185,7 +185,7 @@ class Map2D:
         self.maxx = max(self.maxx, k.x)
         self.miny = min(self.miny, k.y)
         self.maxy = max(self.maxy, k.y)
-        self.map[k] = value
+        self.map[k.copy()] = value
 
     def get_top(self, coord):
         if self.pointer_overlay:

@@ -14,7 +14,7 @@ class Puzzle(AoCPuzzle):
     def __init__(self, lines, is_test=False):
         AoCPuzzle.__init__(self, lines, is_test)
         self.always_run_part_1 = True
-        self.map = InfiniteGrid()
+        self.map = Map2D()
         self.map.fill_from_lines(lines)
         self.asteroids = []
         self.station = None
@@ -77,7 +77,6 @@ class Puzzle(AoCPuzzle):
         destroyed = []
 
         while len(destroyed) < count and len(angles) > 0:
-
             destroyed = self.sweep(angles, destroyed)
             
         return destroyed

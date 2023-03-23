@@ -33,7 +33,7 @@ class Coord2D(CoordND):
     def __add__(self, other):
         return Coord2D(self.x + other.x, self.y + other.y)
     
-    def __iadd__(self, other):
+    def __iadd__(self, other):        
         self.x += other.x
         self.y += other.y
         return self
@@ -77,7 +77,8 @@ class Coord2D(CoordND):
         return "({0},{1})".format(self.x, self.y)
 
     def __hash__(self):
-        return hash(self.as_tuple())
+        res = hash(self.as_tuple())        
+        return res
     
     def __eq__(self, other):
         return ((self.x == other.x) and (self.y == other.y))
@@ -115,6 +116,8 @@ class Coord2D(CoordND):
             for x in range(self.x, lr.x+1):            
                 yield Coord2D(x,y)
     
+    def copy(self):
+        return Coord2D(self.x, self.y)
 
 
 class Direction(Coord2D):
@@ -124,21 +127,16 @@ class Direction(Coord2D):
         return DIRECTION_STRINGS[self]
     def __repr__(self):
         return DIRECTION_STRINGS[self]
-    def turn(self, degrees):
-        print(SURROUNDING)
+    def turn(self, degrees):        
         if degrees % 45 != 0:
             raise Exception("Can only turn in 45 degree increments")
         steps = degrees // 45
         index = SURROUNDING.index(self)
-        print(index)
-        print(SURROUNDING[index])
+        
         assert(SURROUNDING[index] == self)
         index = ((index + len(SURROUNDING)) + steps) % len(SURROUNDING)
-        print(index)
+        
         new_dir = SURROUNDING[index]
-        print(SURROUNDING[index])
-
-        print("Turning {0} degrees from {1} to {2}".format(degrees, self, new_dir))
         
         self.x = new_dir.x
         self.y = new_dir.y

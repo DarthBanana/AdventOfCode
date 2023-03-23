@@ -9,7 +9,9 @@ from parsehelp import *
 class Puzzle(AoCPuzzle):
     def __init__(self, lines, is_test=False):
         AoCPuzzle.__init__(self, lines, is_test)        
-        self.code = get_all_ints(lines[0])
+        self.computer = MyIntcodeComputer()
+        self.computer.load_program_from_input(lines)
+        
         
     def check_diagnostic_output(self, output_mailbox):
         while len(output_mailbox):
@@ -22,33 +24,21 @@ class Puzzle(AoCPuzzle):
         return val
 
     def part1(self):
-        tx_mailbox = Mailbox(True)
-        rx_mailbox = Mailbox(True)
-        computer = MyIntcodeComputer(tx_mailbox, rx_mailbox)
-        
-        code = self.code.copy()        
-        computer.load_program(code)
-        computer.reset()
-        tx_mailbox.send(1)
+        self.computer.reset()
+        self.computer.rx_mailbox.send(1)
 
-        computer.run(True)
+        self.computer.run(True)
         if (self.is_test):
-            return str(rx_mailbox)
-        print(rx_mailbox)
-        return self.check_diagnostic_output(rx_mailbox)
+            return str(self.computer.tx_mailbox)
+        print(self.computer.tx_mailbox)
+        return self.check_diagnostic_output(self.computer.tx_mailbox)
 
 
     def part2(self):
-        tx_mailbox = Mailbox(True)
-        rx_mailbox = Mailbox(True)
-        computer = MyIntcodeComputer(tx_mailbox, rx_mailbox)
-        
-        code = self.code.copy()        
-        computer.load_program(code)
-        computer.reset()
-        tx_mailbox.send(2)
+        self.computer.reset()
+        self.computer.rx_mailbox.send(2)
 
-        computer.run(False)
+        self.computer.run(False)
 
-        print(rx_mailbox)
-        return self.check_diagnostic_output(rx_mailbox)
+        print(self.computer.tx_mailbox)
+        return self.check_diagnostic_output(self.computer.tx_mailbox)

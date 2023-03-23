@@ -6,16 +6,14 @@ import os
 from aocpuzzle import *
 from intcode import *
 from parsehelp import *
-from Map2DLayers import *
+from Map2D import *
 
 class Puzzle(AoCPuzzle):
     def __init__(self, lines, is_test=False):
-        self.input_mailbox = Mailbox(False)
-        self.output_mailbox = Mailbox(False)
-        self.computer = MyIntcodeComputer(self.input_mailbox, self.output_mailbox)
-        self.code = get_all_ints(lines[0])
+        
+        self.computer = MyIntcodeComputer()        
 
-        self.computer.load_program(self.code)
+        self.computer.load_program_from_input(lines)
         #self.computer.interpret_program()        
         #assert(False)
         
@@ -24,8 +22,8 @@ class Puzzle(AoCPuzzle):
         self.reset()
         
     def reset(self):
-        self.map = InfiniteGridStack(' ')       
-        self.robot_map = {}
+        self.map = Map2D(' ')       
+        self.robot_map = self.map.add_overlay(1)
         
         self.computer.reset()
         self.robot_location = Coord2D(0,0)
@@ -33,20 +31,22 @@ class Puzzle(AoCPuzzle):
 
     def part1(self):
         count = 0
+        input_mailbox = self.computer.rx_mailbox
+        output_mailbox = self.computer.tx_mailbox
         while(self.computer.can_continue()):
             current_color = self.map[self.robot_location]
             if current_color == '.' or current_color == ' ':                
-                self.input_mailbox.send(0)
+                input_mailbox.send(0)
             else:
-                self.input_mailbox.send(1)
+                input_mailbox.send(1)
             
             self.computer.run()
             
 
-            assert(len(self.output_mailbox) == 2)
-            #print(self.output_mailbox.mailbox)
-            color = self.output_mailbox.receive()
-            turn = self.output_mailbox.receive()
+            assert(len(output_mailbox) == 2)
+            #print(output_mailbox.mailbox)
+            color = output_mailbox.receive()
+            turn = output_mailbox.receive()
             if color == 0:
                 self.map[self.robot_location] = '.'
             else:

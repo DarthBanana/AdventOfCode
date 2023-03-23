@@ -15,11 +15,12 @@ class Puzzle(AoCPuzzle):
         self.graph.add_edges_from(self.orbits)
         #nx.draw(self.graph, pos=nx.kamada_kawai_layout(self.graph), with_labels=True)
         #plt.show()
+        
     def part1(self):
         num_orbits = 0
         for node in self.graph.nodes():            
-            num_orbits += nx.shortest_path_length(self.graph, source='COM', target=node)
-            
+            num_orbits += nx.shortest_path_length(self.graph, source='COM', target=node)            
         return num_orbits
+    
     def part2(self):
         return nx.shortest_path_length(self.graph, source='YOU', target='SAN') - 2

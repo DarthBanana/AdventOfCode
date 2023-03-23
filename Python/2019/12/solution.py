@@ -9,6 +9,7 @@ import math
 from aocpuzzle import *
 from parsehelp import *
 from CoordND import *
+
 class Moon:
     def __init__(self, pos):
         self.pos = CoordND(pos)

@@ -1,10 +1,11 @@
 ## advent of code 2019
 ## https://adventofcode.com/2019
 ## day 01
+from aocpuzzle import *
 from parsehelp import *
-class Puzzle:
-    def __init__(self, lines):
-        self.always_run_part_1 = False    
+class Puzzle(AoCPuzzle):
+    def __init__(self, lines, is_test=False):
+        AoCPuzzle.__init__(self, lines, is_test)        
         self.masses =  get_int_per_line(lines)   
 
     def calculate_fuel(self, mass):

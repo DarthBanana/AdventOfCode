@@ -3,7 +3,8 @@
 ## day 08
 
 from aocpuzzle import *
-from Map2DLayers import *
+from Map2D import *
+
 class Puzzle(AoCPuzzle):
     def __init__(self, lines, is_test=False):
         AoCPuzzle.__init__(self, lines, is_test=False)
@@ -14,10 +15,13 @@ class Puzzle(AoCPuzzle):
         else:
             self.width = 25
             self.height = 6
+
         self.layers = []
         self.pixels = []
+
         for c in line:
             self.pixels.append(int(c))
+
         assert(len(self.pixels) % (self.width * self.height) == 0)
         self.num_layers = len(self.pixels) // (self.width * self.height)
         for i in range(self.num_layers):
@@ -37,7 +41,7 @@ class Puzzle(AoCPuzzle):
 
 
     def part2(self):
-        map = InfiniteGridStack('.')
+        map = Map2D('.')
         map.minx = -1
         map.maxx = self.width+1
         map.miny = -1
@@ -45,9 +49,8 @@ class Puzzle(AoCPuzzle):
         #map[Coord2D(0,0)] = 'X'
         layer_maps = []
         for i in range(self.num_layers):
-            new_map = {}
-            layer_maps.insert(0,new_map)
-            map.add_layer(new_map)        
+            new_map = map.add_overlay(i + 1)
+            layer_maps.insert(0,new_map)             
         #layer_maps.reverse
         for i in range(self.num_layers):
             layer = self.layers[i]

@@ -42,6 +42,7 @@ class Puzzle(AoCPuzzle):
         self.AmpD.reset()
         self.AmpE.reset()
         self.amps = deque([self.AmpA, self.AmpB, self.AmpC, self.AmpD, self.AmpE])
+        
     def setup_phase(self, phase):
         self.input_mailbox.send(phase[0])
         self.ABmailbox.send(phase[1])

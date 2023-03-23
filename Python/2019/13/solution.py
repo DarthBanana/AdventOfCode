@@ -12,21 +12,18 @@ from parsehelp import get_all_ints
 class Puzzle(AoCPuzzle):
     def __init__(self, lines, is_test=False):
         AoCPuzzle.__init__(self, lines, is_test)
-        self.code = get_all_ints(lines[0])
-        self.input_mailbox = Mailbox()
-        self.output_mailbox = Mailbox()
-
-        self.computer = MyIntcodeComputer(self.input_mailbox, self.output_mailbox)
-        self.computer.load_program(self.code)
+        
+        self.computer = MyIntcodeComputer()
+        self.output_mailbox = self.computer.tx_mailbox
+        self.input_mailbox = self.computer.rx_mailbox
+        self.computer.load_program_from_input(lines)
         self.reset()
 
     def reset(self):
         self.score = 0
-        self.input_mailbox.reset()
-        self.output_mailbox.reset()
         self.computer.reset()
         
-        self.map = PrettyInfiniteGrid()
+        self.map = PrettyMap2D()
 
     def run_program(self):
         self.computer.run()

@@ -23,6 +23,7 @@ def get_ints_per_line(lines):
     if len(lists) == 1:
         return lists[0]
     return lists
+
 int_re = re.compile(r"[-+]?\d+")
-def get_all_ints(line):
+def get_all_ints(line):    
     return [int(x) for x in int_re.findall(line)]

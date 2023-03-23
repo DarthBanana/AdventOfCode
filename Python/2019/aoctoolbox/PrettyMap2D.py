@@ -139,7 +139,7 @@ class PrettyMap2DOverlay(Map2DOverlay):
     def update(self, map_left, map_top, minx, miny):
         for sprite in self.sprites.values():
             sprite.update(map_left, map_top, minx, miny)
-        self.attached_map.try_auto_refresh()
+        #self.attached_map.try_auto_refresh()
         
 
     def draw(self):

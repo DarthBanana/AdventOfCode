@@ -5,8 +5,8 @@
 from aocpuzzle import *
 
 class Puzzle(AoCPuzzle):
-    def __init__(self, lines):
-        AoCPuzzle.__init__(self, lines)
+    def __init__(self, lines, is_test=False):
+        AoCPuzzle.__init__(self, lines, is_test)
         input = lines[0].split('-')
         self.min_value = int(input[0])
         self.min_digits = [int(x) for x in input[0]]
