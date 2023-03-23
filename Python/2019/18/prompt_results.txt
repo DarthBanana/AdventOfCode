@@ -1,0 +1,5 @@
+Puzzle 2019/18 : Correct Answers retrieved from prompt on 2023-03-23 14:21:30
+Part1: Your puzzle answer was <code>4510</code>.
+Part2: Your puzzle answer was <code>1816</code>.
+
+

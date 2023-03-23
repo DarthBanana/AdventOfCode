@@ -1,0 +1,5 @@
+Puzzle 2019/12 : Correct Answers retrieved from prompt on 2023-03-23 14:19:27
+Part1: Your puzzle answer was <code>7013</code>.
+Part2: Your puzzle answer was <code>324618307124784</code>.
+
+

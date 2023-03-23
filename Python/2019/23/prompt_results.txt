@@ -1,0 +1,5 @@
+Puzzle 2019/23 : Correct Answers retrieved from prompt on 2023-03-23 14:27:51
+Part1: Your puzzle answer was <code>17283</code>.
+Part2: Your puzzle answer was <code>11319</code>.
+
+

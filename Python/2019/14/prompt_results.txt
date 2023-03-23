@@ -1,0 +1,5 @@
+Puzzle 2019/14 : Correct Answers retrieved from prompt on 2023-03-23 14:20:39
+Part1: Your puzzle answer was <code>337075</code>.
+Part2: Your puzzle answer was <code>5194174</code>.
+
+
