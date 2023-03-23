@@ -140,8 +140,7 @@ class Puzzle(AoCPuzzle):
 
     def p2_reduced_graph(self):                
 
-        for p in self.pois:
-            
+        for p in self.pois:            
             p.paths = self.find_paths_from_poi(p)
             
 
@@ -187,21 +186,16 @@ class Puzzle(AoCPuzzle):
 
 
     def p2_bfs(self):
-        last = -2
-        goal = (0, self.exit)
         location = (0,self.start)        
         queue = deque()
         visited = {}
         queue.append((location, 0, []))
         while (len(queue) > 0):
             (location, steps, path) = queue.popleft()
-            if steps > last:
-                print(steps)
-            last = steps
+
             #print(location)
             if location[0] == 0 and location[1] == self.exit:
-                print("found it!")
-                print(path)
+                print("found it!")                
                             
                 return steps, path
 

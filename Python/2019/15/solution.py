@@ -15,14 +15,14 @@ DIRECTION_TRANSLATOR = {N: (1,'^'), S: (2,'v'), W: (3,'<'), E: (4,'>')}
 class Puzzle(AoCPuzzle):
     def __init__(self, lines, is_test=False):
         AoCPuzzle.__init__(self, lines, is_test)
-        self.always_run_part_1 = True
-        self.code = get_all_ints(lines[0])
-        self.map = PrettyInfiniteGrid()
+        self.always_run_part_1 = True        
+        #self.map = PrettyMap2D()
+        self.map = Map2D()
         
         self.input_mailbox = Mailbox(False)
         self.output_mailbox = Mailbox(False)
         self.computer = MyIntcodeComputer(self.input_mailbox, self.output_mailbox)
-        self.computer.load_program(self.code)
+        self.computer.load_program_from_input(lines)
         self.reset()
         self.droid_position = Coord2D(0,0)
         self.droid_direction = N
@@ -34,8 +34,7 @@ class Puzzle(AoCPuzzle):
     def reset(self):     
         
         self.computer.reset()
-        self.input_mailbox.reset()
-        self.output_mailbox.reset()
+
     
     def process_output(self):
         output = self.output_mailbox.receive()
@@ -58,8 +57,7 @@ class Puzzle(AoCPuzzle):
         
         
 
-    def part1(self):
-        
+    def part1(self):        
         
         #self.map.autodraw = False
         self.visited = set()
@@ -142,7 +140,7 @@ class Puzzle(AoCPuzzle):
         self.filled = set()
         next_round = [start]
         while len(next_round) > 0:
-            print(time)
+            #print(time)
             current_round = next_round
             next_round = []
             for position in current_round:

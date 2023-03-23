@@ -35,7 +35,7 @@ class PointerOverlay(Map2DOverlay):
         self.coord = None
         self.value = None
 
-    def __set_item__(self, k, value):
+    def __setitem__(self, k, value):
         self.coord = k
         self.value = value
 
@@ -154,7 +154,7 @@ class Map2D:
         if not self.pointer_overlay:
             self.pointer_overlay = self._get_new_pointer_overlay()
 
-        pointer = self.get_pointer_overlay()
+        pointer = self.pointer_overlay
         pointer[k] = value
 
     def fill_from_lines(self, lines):

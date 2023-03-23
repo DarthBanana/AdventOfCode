@@ -13,18 +13,18 @@ from parsehelp import *
 class Puzzle(AoCPuzzle):
     def __init__(self, lines, is_test=False):
         AoCPuzzle.__init__(self, lines, is_test)
-        self.always_run_part_1 = True
-        self.code = get_all_ints(lines[0])
+        self.always_run_part_1 = True        
 
         self.input_mailbox = Mailbox()
         self.output_mailbox = Mailbox()
         self.computer = MyIntcodeComputer(
             self.input_mailbox, self.output_mailbox)
-        self.computer.load_program(self.code)
+        self.computer.load_program_from_input(lines)
         # self.computer[0] = 2
         # self.computer.interpret_program()
         # assert(False)
-        self.map = PrettyMap2D()
+        #self.map = PrettyMap2D()
+        self.map = Map2D()
         self.visited_layer = self.map.add_overlay(100)
         self.reset()
         self.pois = []
@@ -186,7 +186,7 @@ class Puzzle(AoCPuzzle):
             print("still can run??")
 
         self.map.refresh()
-        sleep(2)
+        #sleep(2)
         if drain_mailbox:
             print(len(self.output_mailbox))
             print(self.output_mailbox)
