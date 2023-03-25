@@ -1,0 +1,18 @@
+**** EXPECTED RESULT ****
+6
+**** INPUT ****
+abc
+
+a
+b
+c
+
+ab
+ac
+
+a
+a
+a
+a
+
+b

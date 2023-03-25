@@ -1,0 +1,8 @@
+Puzzle 2020/06 Part 1 : Result for 2023-03-25 13:09:14
+Part1 Answer: 6799
+Execution Time: 1ms
+
+Puzzle 2020/06 Part 2 : Result for 2023-03-25 13:11:24
+Part2 Answer: 3354
+Execution Time: 2ms
+
