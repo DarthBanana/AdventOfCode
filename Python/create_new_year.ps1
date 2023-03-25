@@ -21,4 +21,6 @@ pip install -e .\$Year\aoctoolbox\
 pip install networkx
 pip install matplotlib
 pip install numpy
+pip install pygame
 
+advent year $Year

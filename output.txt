@@ -1,0 +1,7 @@
+Configured Day: 2022/00
+
+Testing 2022/00
+	Testing all parts
+Directory does not exist:
+  "D:\git\AdventOfCode/2022/00/"
+

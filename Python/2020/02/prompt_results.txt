@@ -1,0 +1,5 @@
+Puzzle 2020/02 : Correct Answers retrieved from prompt on 2023-03-24 13:32:20
+Part1: Your puzzle answer was <code>645</code>.
+Part2: Your puzzle answer was <code>737</code>.
+
+
