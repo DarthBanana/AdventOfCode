@@ -1,0 +1,4 @@
+**** EXPECTED RESULT ****
+820
+**** INPUT ****
+BBFFBBFRLL
