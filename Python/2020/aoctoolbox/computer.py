@@ -112,9 +112,9 @@ class ComputerRoot:
     def stop(self):
         self.running = False
 
-    def step(self):
+    def step(self, verbose=False):
         self.running = False
-        self.run()
+        self.run(verbose, instruction_count=1)
 
     def is_ip_valid(self, ip):
 

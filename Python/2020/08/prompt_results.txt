@@ -1,0 +1,5 @@
+Puzzle 2020/08 : Correct Answers retrieved from prompt on 2023-03-28 13:00:28
+Part1: Your puzzle answer was <code>1610</code>.
+Part2: Your puzzle answer was <code>1703</code>.
+
+
