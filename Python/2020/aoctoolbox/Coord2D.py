@@ -186,6 +186,18 @@ def TurnRight90(Direction):
     assert(SURROUNDING[index] == Direction)
     index = (index + 2) % len(SURROUNDING)
     return SURROUNDING[index]
+
+def Turn(direction, degrees):
+    if degrees % 45 != 0:
+        raise Exception("Can only turn in 45 degree increments")
+    steps = degrees // 45
+    index = SURROUNDING.index(direction)
     
+    assert(SURROUNDING[index] == direction)
+    index = ((index + len(SURROUNDING)) + steps) % len(SURROUNDING)
+    
+    return SURROUNDING[index]
+    
+turn = Turn
 turn_left = TurnLeft90
 turn_right = TurnRight90

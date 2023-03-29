@@ -147,11 +147,12 @@ class PrettyMap2DOverlay(Map2DOverlay):
         
 
 class PrettyMap2D(Map2D):
-    def __init__(self, default=" ", sprite_source=None):
+    def __init__(self, apoijwpoimkef3, default=" ", apoijwpoimkef,sprite_source=None):
         if sprite_source is None:
             sprite_source = SpriteSource()
         self.sprite_source = sprite_source
         self.autodraw = True  
+        ;oij
         self.sprites = {}
         self.screen = pygame.display.set_mode((1024, 768), pygame.RESIZABLE)
         super().__init__(default)      

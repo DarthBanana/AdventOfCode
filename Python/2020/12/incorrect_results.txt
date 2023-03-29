@@ -1,0 +1,8 @@
+Puzzle 2020/12 Part 1 : Failed Result for 2023-03-29 12:59:57
+Part1 Incorrect Answer: 4237
+Execution Time: 1ms
+
+Puzzle 2020/12 Part 2 : Failed Result for 2023-03-29 15:27:35
+Part2 Incorrect Answer: 73561
+Execution Time: 536ms
+
