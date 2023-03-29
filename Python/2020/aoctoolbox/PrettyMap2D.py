@@ -1,4 +1,5 @@
-import time
+
+from time import sleep
 from Map2D import *
 import pygame
 IMAGES = {}
@@ -147,14 +148,16 @@ class PrettyMap2DOverlay(Map2DOverlay):
         
 
 class PrettyMap2D(Map2D):
-    def __init__(self, default=" ", sprite_source=None):
+    def __init__(self, default=" ", sprite_source=None, lines=None):
+        
         if sprite_source is None:
             sprite_source = SpriteSource()
         self.sprite_source = sprite_source
-        self.autodraw = True  
+        self.autodraw = False  
         self.sprites = {}
         self.screen = pygame.display.set_mode((1024, 768), pygame.RESIZABLE)
-        super().__init__(default)      
+        super().__init__(default, lines=lines)      
+        self.autodraw = True
         #self.reset()
 
     #def reset(self):

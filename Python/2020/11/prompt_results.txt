@@ -1,0 +1,5 @@
+Puzzle 2020/11 : Correct Answers retrieved from prompt on 2023-03-28 21:55:40
+Part1: Your puzzle answer was <code>2275</code>.
+Part2: Your puzzle answer was <code>2121</code>.
+
+

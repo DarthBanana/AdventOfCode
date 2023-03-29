@@ -54,7 +54,7 @@ class PointerOverlay(Map2DOverlay):
 
 
 class Map2D:
-    def __init__(self, default=None):
+    def __init__(self, default=None, lines=None):
 
         self.default = default
 
@@ -64,6 +64,21 @@ class Map2D:
         self.invalid = set("#")
         self.wormholes = {}
         self.clear()
+        if lines:
+            self.fill_from_lines(lines)
+
+    def copy(self):
+        new_map = Map2D(self.default)
+        new_map.map = self.map.copy()
+        new_map.minx = self.minx
+        new_map.maxx = self.maxx
+        new_map.miny = self.miny
+        new_map.maxy = self.maxy
+        new_map.perimeter_type = self.perimeter_type
+        new_map.invalid = self.invalid.copy()
+        new_map.wormholes = self.wormholes.copy()
+        return new_map
+
 
     def refresh(self):
         pass
@@ -125,6 +140,9 @@ class Map2D:
 
     def __iter__(self):
         return self.map.__iter__()
+    
+    def items(self):
+        return self.map.items()
 
     def get_sub_map(self, point_a, point_b):
         top_left = Coord2D(min(point_a.x, point_b.x), min(point_a.y, point_b.y))
@@ -289,6 +307,12 @@ class Map2D:
 
     def count(self, value):
         return sum(1 for v in self.map.values() if v == value)
+    
+    def count_neighbors(self, coord, value):
+        return sum(1 for n in coord.neighbor_coords() if self[n] == value)
+    
+    def count_surrounding(self, coord, value):
+        return sum(1 for n in coord.surrounding_coords() if self[n] == value)
 
     def find(self, value):
         for k, v in self.map.items():
