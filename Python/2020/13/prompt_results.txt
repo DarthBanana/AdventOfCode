@@ -1,0 +1,5 @@
+Puzzle 2020/13 : Correct Answers retrieved from prompt on 2023-03-29 16:47:39
+Part1: Your puzzle answer was <code>3464</code>.
+Part2: Your puzzle answer was <code>760171380521445</code>.
+
+
