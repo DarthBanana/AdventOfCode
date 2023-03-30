@@ -1,0 +1,4 @@
+**** EXPECTED RESULT ****
+10
+**** INPUT ****
+2,1,3
