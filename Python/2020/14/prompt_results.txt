@@ -1,0 +1,5 @@
+Puzzle 2020/14 : Correct Answers retrieved from prompt on 2023-03-29 17:02:04
+Part1: Your puzzle answer was <code>14862056079561</code>.
+Part2: Your puzzle answer was <code>3296185383161</code>.
+
+
