@@ -5,6 +5,7 @@ PrettyMap2D.py
 threaded_computer.py
 CoordND.py
 Map2D.py
+MapND.py
 README.md
 RingList.py
 __init__.py

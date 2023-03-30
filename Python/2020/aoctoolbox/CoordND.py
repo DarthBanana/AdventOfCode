@@ -1,5 +1,5 @@
 from enum import Enum
-
+from itertools import *
 
 def adjac(ele, sub = ()):
     if not ele:
@@ -18,6 +18,15 @@ def dim_iterator(ele, dim, sub = ()):
 class CoordND:
     def __init__(self, coord):
         self.coord = tuple(coord)
+    
+    def min(self, other):
+        if other is None:
+            return self.copy()
+        return CoordND(tuple(map(lambda i, j: min(i, j), self.coord, other.coord)))
+    def max(self, other):
+        if other is None:
+            return self.copy() 
+        return CoordND(tuple(map(lambda i, j: max(i, j), self.coord, other.coord)))
     
     def manhattan_distance(self, other=None):
         if other is None:
@@ -105,10 +114,16 @@ class CoordND:
         coords = list(self.coord) 
         coords[k] = value
         self.coord = tuple(coords)
+
+    def __len__(self):
+        return len(self.coord)
   
     def surrounding_coords(self):
-        coords = [CoordND(i) for i in adjac(self.coord)]
-        coords.sort()
+        coords = []
+        for i in adjac(self.coord):
+            if i != self.coord:
+                coords.append(CoordND(i))
+        #coords.sort()
         return coords
     
     def neighbor_coords(self):
@@ -128,5 +143,8 @@ class CoordND:
     def rectangle_tl_coords(self, dims):
         for i in dim_iterator(self.coord, dims):
             yield CoordND(i)
+    
+    def copy(self):
+        return CoordND(self.coord)
         
     
