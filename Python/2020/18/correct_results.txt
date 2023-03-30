@@ -1,0 +1,8 @@
+Puzzle 2020/18 Part 1 : Result for 2023-03-30 14:51:42
+Part1 Answer: 6811433855019
+Execution Time: 3ms
+
+Puzzle 2020/18 Part 2 : Result for 2023-03-30 15:21:56
+Part2 Answer: 129770152447927
+Execution Time: 6ms
+

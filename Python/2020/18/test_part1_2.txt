@@ -1,0 +1,4 @@
+**** EXPECTED RESULT ****
+26
+**** INPUT ****
+2 * 3 + (4 * 5)

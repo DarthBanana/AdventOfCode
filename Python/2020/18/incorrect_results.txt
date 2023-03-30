@@ -1,0 +1,4 @@
+Puzzle 2020/18 Part 1 : Failed Result for 2023-03-30 14:50:38
+Part1 Incorrect Answer: 12555
+Execution Time: 0ms
+
