@@ -16,8 +16,11 @@ def dim_iterator(ele, dim, sub = ()):
             for idx in dim_iterator(ele[1:], dim[1:], sub + (j,)))
 
 class CoordND:
+    deltas = {}
     def __init__(self, coord):
         self.coord = tuple(coord)
+        if len(self.coord) not in CoordND.deltas:
+            CoordND.deltas[len(self.coord)] = list(product((-1, 0, 1), repeat=len(self.coord)))
     
     def min(self, other):
         if other is None:
@@ -119,10 +122,12 @@ class CoordND:
         return len(self.coord)
   
     def surrounding_coords(self):
+        deltas = self.deltas[len(self.coord)] #list(product((-1, 0, 1), repeat=len(self.coord)))
         coords = []
-        for i in adjac(self.coord):
-            if i != self.coord:
-                coords.append(CoordND(i))
+        for i in deltas:
+            #other = CoordND(i)            
+            if i != (0,) * len(self.coord):            
+                coords.append(CoordND(tuple(x + y for (x, y) in zip(self.coord, i))))
         #coords.sort()
         return coords
     
