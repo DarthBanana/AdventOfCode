@@ -1,0 +1,5 @@
+Puzzle 2020/19 : Correct Answers retrieved from prompt on 2023-03-31 15:41:22
+Part1: Your puzzle answer was <code>142</code>.
+Part2: Your puzzle answer was <code>294</code>.
+
+
