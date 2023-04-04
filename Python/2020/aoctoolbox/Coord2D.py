@@ -118,6 +118,22 @@ class Coord2D(CoordND):
     
     def copy(self):
         return Coord2D(self.x, self.y)
+    
+    def rotate_90_around_point(self, point):
+        
+        x = self.x - point.x
+        y = self.y - point.y
+        new_coord = Coord2D(point.x - y, point.y + x)
+        return new_coord
+    
+    def rotate_around_point(self, point, degrees):
+        new_coord = self.copy()
+        if degrees % 90 != 0:
+            raise Exception("Can only rotate in 90 degree increments")
+        steps = degrees // 90
+        for i in range(steps):
+            new_coord = new_coord.rotate_90_around_point(point)
+        return new_coord
 
 
 class Direction(Coord2D):
