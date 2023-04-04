@@ -1,0 +1,8 @@
+Puzzle 2020/21 Part 1 : Result for 2023-04-04 01:29:13
+Part1 Answer: 2517
+Execution Time: 2ms
+
+Puzzle 2020/21 Part 2 : Result for 2023-04-04 01:32:48
+Part2 Answer: rhvbn,mmcpg,kjf,fvk,lbmt,jgtb,hcbdb,zrb
+Execution Time: 0ms
+
