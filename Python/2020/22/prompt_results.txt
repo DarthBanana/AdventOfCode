@@ -1,0 +1,5 @@
+Puzzle 2020/22 : Correct Answers retrieved from prompt on 2023-04-05 16:16:11
+Part1: Your puzzle answer was <code>32598</code>.
+Part2: Your puzzle answer was <code>35836</code>.
+
+

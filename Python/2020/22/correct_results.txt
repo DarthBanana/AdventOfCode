@@ -1,0 +1,8 @@
+Puzzle 2020/22 Part 1 : Result for 2023-04-04 18:02:07
+Part1 Answer: 32598
+Execution Time: 0ms
+
+Puzzle 2020/22 Part 2 : Result for 2023-04-05 16:16:10
+Part2 Answer: 35836
+Execution Time: 762ms
+
