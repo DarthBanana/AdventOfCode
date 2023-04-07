@@ -1,0 +1,4 @@
+Puzzle 2020/25 Part 1 : Result for 2023-04-07 14:45:14
+Part1 Answer: 6198540
+Execution Time: 2968ms
+
