@@ -193,6 +193,12 @@ class PrettyMap2D(Map2D):
             self.render_group.add(sprite)
 
         self.try_auto_refresh()
+    def __delitem__(self, k):
+        super().__delitem__(k)
+        if k in self.sprites:
+            sprite = self.sprites[k]
+            del self.sprites[k]
+            self.render_group.remove(sprite)
         
 
     def set_pointer(self, k, value):

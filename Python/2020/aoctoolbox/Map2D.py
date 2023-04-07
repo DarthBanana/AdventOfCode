@@ -205,6 +205,9 @@ class Map2D:
         self.maxy = max(self.maxy, k.y)
         self.map[k.copy()] = value
 
+    def __delitem__(self, k):
+        del self.map[k]
+
     def get_top(self, coord):
         if self.pointer_overlay:
             if coord in self.pointer_overlay:

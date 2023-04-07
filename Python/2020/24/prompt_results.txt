@@ -1,0 +1,5 @@
+Puzzle 2020/24 : Correct Answers retrieved from prompt on 2023-04-07 14:28:28
+Part1: Your puzzle answer was <code>320</code>.
+Part2: Your puzzle answer was <code>3777</code>.
+
+
