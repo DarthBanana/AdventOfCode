@@ -36,3 +36,17 @@ class RingNode:
         for i in range(n):
             cur = cur.prev
         return cur
+
+    def __str__(self):
+        return str(self.data)
+    def __repr__(self):
+        return self.__str__()
+    
+    def print_ring(self):
+        node = self        
+        while True:            
+            print(str(node.data), end=",")
+            if node == self.prev:
+                break
+            node = node.next
+        print()

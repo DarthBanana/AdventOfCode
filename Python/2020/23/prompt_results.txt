@@ -1,0 +1,5 @@
+Puzzle 2020/23 : Correct Answers retrieved from prompt on 2023-04-07 11:56:59
+Part1: Your puzzle answer was <code>58427369</code>.
+Part2: Your puzzle answer was <code>111057672960</code>.
+
+
