@@ -1,0 +1,4 @@
+**** EXPECTED RESULT ****
+4
+**** INPUT ****
+123456

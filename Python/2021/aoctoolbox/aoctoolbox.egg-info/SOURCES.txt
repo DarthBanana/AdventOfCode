@@ -1,6 +1,7 @@
 Coord2D.py
 CoordND.py
 Map2D.py
+MapND.py
 PrettyMap2D.py
 PrettyMap2D2.py
 PrettyMap2Dthread.py
@@ -13,8 +14,10 @@ intcode.py
 intcode_disassembler.py
 mapgraph.py
 parsehelp.py
+setup copy.py
 setup.py
 threaded_computer.py
+tiles.py
 aoctoolbox.egg-info/PKG-INFO
 aoctoolbox.egg-info/SOURCES.txt
 aoctoolbox.egg-info/dependency_links.txt

@@ -1,0 +1,5 @@
+Puzzle 2021/01 : Correct Answers retrieved from prompt on 2023-04-07 15:00:22
+Part1: Your puzzle answer was <code>1233</code>.
+Part2: Your puzzle answer was <code>1275</code>.
+
+
