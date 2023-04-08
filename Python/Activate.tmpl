@@ -169,7 +169,7 @@ function Get-PyVenvConfig(
 # Determine the containing directory of this script
 $VenvExecPath = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $VenvExecDir = Get-Item -Path $VenvExecPath
-$env:ADVENT_SESSION_COOKIE="53616c7465645f5f7c4e7ec7f528d48dcd6c56ba0e4b6aee09ad5cdeb18aa5838114f8a6ddb3d4c37e884536355e4b64d2f0e4e32bd8b04cf87629d437bb2d25"
+$env:ADVENT_SESSION_COOKIE="53616c7465645f5fbca8c357c20574f8a610acaee3979bdb9379c0b6f64981925309a1da91aad76280dd1efe4013efc89d58c3f094972df644366d28b52233d7"
 
 Write-Verbose "Activation script is located in path: '$VenvExecPath'"
 Write-Verbose "VenvExecDir Fullname: '$($VenvExecDir.FullName)"
