@@ -188,7 +188,25 @@ DIRECTION_STRINGS = {
     NW: "NW"
 }
 
-
+def CoordsInLineHV45(Start, End):
+    step = (End-Start)/ Start.dist(End)
+    step_x = 0
+    step_y = 0
+    if End.x > Start.x:
+        step_x = 1
+    elif Start.x > End.x:
+        step_x = -1
+    if End.y > Start.y:
+        step_y = 1
+    elif End.y < Start.y:
+        step_y = -1
+    step = Coord2D(step_x, step_y)    
+    point = Start
+    while point != End:
+        yield point
+        point = point + step
+    yield End
+    
 
 SURROUNDING = [N, NE, E, SE, S, SW, W, NW]
 NEIGHBORS = [N, E, S, W]

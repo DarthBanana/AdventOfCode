@@ -1,0 +1,4 @@
+Puzzle 2021/05 Part 1 : Result for 2023-04-08 00:55:20
+Part1 Answer: 6113
+Execution Time: 410ms
+

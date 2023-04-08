@@ -205,6 +205,12 @@ class Map2D:
         self.maxy = max(self.maxy, k.y)
         self.map[k.copy()] = value
 
+    def get(self, k, default):
+        return self.map.get(k, default)
+
+    def values(self):
+        return self.map.values()
+        
     def __delitem__(self, k):
         del self.map[k]
 
