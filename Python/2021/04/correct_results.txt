@@ -1,0 +1,8 @@
+Puzzle 2021/04 Part 1 : Result for 2023-04-07 17:36:56
+Part1 Answer: 35670
+Execution Time: 0ms
+
+Puzzle 2021/04 Part 2 : Result for 2023-04-07 18:14:30
+Part2 Answer: 22704
+Execution Time: 4ms
+
