@@ -1,0 +1,4 @@
+**** EXPECTED RESULT ****
+5353
+**** INPUT ****
+acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf
