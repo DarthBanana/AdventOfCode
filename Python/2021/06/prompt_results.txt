@@ -1,0 +1,5 @@
+Puzzle 2021/06 : Correct Answers retrieved from prompt on 2023-04-10 11:11:27
+Part1: Your puzzle answer was <code>387413</code>.
+Part2: Your puzzle answer was <code>1738377086345</code>.
+
+
