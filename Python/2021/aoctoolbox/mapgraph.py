@@ -31,9 +31,9 @@ class Map2DGraph(nx.Graph):
 def generate_neighbor_graph_from_map(map, valid_values="."):
     graph = nx.Graph()
     for coord in map:
-        if map[coord] in valid_values:
+        if map[coord] in valid_values:            
             for n in coord.neighbor_coords():
-                if map[n] in valid_values:
+                if map[n] in valid_values:                    
                     graph.add_edge(coord, n)
     return graph
 
