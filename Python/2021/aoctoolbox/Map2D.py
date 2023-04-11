@@ -91,6 +91,17 @@ class Map2D:
         self.maxy = -sys.maxsize - 1
         for overlay in self.overlays:
             overlay.clear()
+
+    def reset_minmax(self):
+        self.minx = sys.maxsize
+        self.maxx = -sys.maxsize - 1
+        self.miny = sys.maxsize
+        self.maxy = -sys.maxsize - 1
+        for coord in self:
+            self.minx = min(self.minx, coord.x)
+            self.maxx = max(self.maxx, coord.x)
+            self.miny = min(self.miny, coord.y)
+            self.maxy = max(self.maxy, coord.y)
     
     def top_right(self):
         return Coord2D(self.maxx, self.miny)

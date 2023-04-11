@@ -1,0 +1,8 @@
+Puzzle 2021/13 Part 1 : Result for 2023-04-11 15:29:40
+Part1 Answer: 770
+Execution Time: 470ms
+
+Puzzle 2021/13 Part 2 : Result for 2023-04-11 15:37:40
+Part2 Answer: EPUELPBR
+Execution Time: 19ms
+
