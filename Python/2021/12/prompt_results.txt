@@ -1,0 +1,5 @@
+Puzzle 2021/12 : Correct Answers retrieved from prompt on 2023-04-11 15:08:49
+Part1: Your puzzle answer was <code>3887</code>.
+Part2: Your puzzle answer was <code>104834</code>.
+
+
