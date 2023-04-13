@@ -401,3 +401,60 @@ def find_distances_from_coord(valid_coords, coord):
 class InfiniteGrid(Map2D):
     def __init__(self, default_value):
         super().__init__(default_value)
+
+
+#    def astar(self):
+#        start = Coord2D(0,0)
+#        end = self.map.bottom_right()
+#        open_set = [start]
+#        came_from = {}
+#        gscore = {}
+#        gscore[start] = 0
+#        fscore = {}
+#        h = lambda s: s.distance(end)
+#
+#        fscore[start] = h(start)
+#
+#        while len(open_set) > 0:
+#            open_set.sort(key=lambda x: fscore.get(x, 10000000000000), reverse = True)
+#            current = open_set.pop()
+#            if current == end:
+#                path = [current]
+#                while current != start:
+#                    current = came_from[current]
+#                    path.append(current)
+#                path.reverse()
+#                print(path)
+#                
+#                return gscore[current]
+#            for n in current.neighbors():
+#                if n not in self.map:
+#                    continue
+#                tentative_gscore = gscore.get(current, 10000000000000) + self.map[n]
+#                if tentative_gscore < gscore.get(n, 10000000000000):
+#                    came_from[n] = current
+#                    gscore[n] = tentative_gscore
+#                    fscore[n] = tentative_gscore + h(n)
+#                    if n not in open_set:
+#                        open_set.append(n)
+
+
+ #   def dijkstra(self):
+ #       queue = [c for c in self.map]
+ #       distances = {}
+ #       distances[Coord2D(0,0)] = 0
+ #       target = self.map.bottom_right()
+ #       prev = {}
+ #       while len(queue) > 0:
+ #           queue.sort(key=lambda x: distances.get(x, 100000000000), reverse=True)
+ #           coord = queue.pop()
+ #           if coord == target:
+ #               break
+ #           for n in coord.neighbors():
+ #               if n in queue:
+ #                   alt = distances[coord] + self.map[n]
+ #                   if alt < distances.get(n, 100000000000):
+ #                       distances[n] = alt
+ #                       prev[n] = coord
+        
+ #       return distances[target]
