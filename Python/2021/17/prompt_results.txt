@@ -1,0 +1,5 @@
+Puzzle 2021/17 : Correct Answers retrieved from prompt on 2023-04-14 16:16:59
+Part1: Your puzzle answer was <code>4186</code>.
+Part2: Your puzzle answer was <code>2709</code>.
+
+
