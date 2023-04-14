@@ -1,0 +1,4 @@
+**** EXPECTED RESULT ****
+9
+**** INPUT ****
+CE00C43D881120

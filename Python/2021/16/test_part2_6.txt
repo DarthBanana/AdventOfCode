@@ -1,0 +1,4 @@
+**** EXPECTED RESULT ****
+0
+**** INPUT ****
+F600BC2D8F

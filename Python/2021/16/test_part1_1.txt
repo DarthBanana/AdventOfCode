@@ -1,0 +1,4 @@
+**** EXPECTED RESULT ****
+6
+**** INPUT ****
+D2FE28

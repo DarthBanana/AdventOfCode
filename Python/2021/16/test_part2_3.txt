@@ -1,0 +1,4 @@
+**** EXPECTED RESULT ****
+7
+**** INPUT ****
+880086C3E88112

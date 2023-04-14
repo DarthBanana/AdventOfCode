@@ -1,0 +1,5 @@
+Puzzle 2021/16 : Correct Answers retrieved from prompt on 2023-04-14 13:32:54
+Part1: Your puzzle answer was <code>897</code>.
+Part2: Your puzzle answer was <code>9485076995911</code>.
+
+

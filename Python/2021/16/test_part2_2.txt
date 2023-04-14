@@ -1,0 +1,4 @@
+**** EXPECTED RESULT ****
+54
+**** INPUT ****
+04005AC33890
