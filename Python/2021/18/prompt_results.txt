@@ -1,0 +1,5 @@
+Puzzle 2021/18 : Correct Answers retrieved from prompt on 2023-04-17 14:01:52
+Part1: Your puzzle answer was <code>3981</code>.
+Part2: Your puzzle answer was <code>4687</code>.
+
+
