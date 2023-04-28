@@ -1,0 +1,5 @@
+Puzzle 2021/20 : Correct Answers retrieved from prompt on 2023-04-28 14:13:48
+Part1: Your puzzle answer was <code>5464</code>.
+Part2: Your puzzle answer was <code>19228</code>.
+
+

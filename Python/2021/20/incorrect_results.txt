@@ -1,0 +1,8 @@
+Puzzle 2021/20 Part 1 : Failed Result for 2023-04-28 14:05:16
+Part1 Incorrect Answer: 5481
+Execution Time: 564ms
+
+Puzzle 2021/20 Part 1 : Failed Result for 2023-04-28 14:07:23
+Part1 Incorrect Answer: 6870
+Execution Time: 591ms
+

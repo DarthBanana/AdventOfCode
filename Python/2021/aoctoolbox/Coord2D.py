@@ -134,6 +134,11 @@ class Coord2D(CoordND):
         for i in range(steps):
             new_coord = new_coord.rotate_90_around_point(point)
         return new_coord
+    
+    def rectangle_centered(self, width, height):
+        tl = self - Coord2D(width//2, height//2)
+        return tl.rectangle_tl_coords(width, height)
+
 
 
 class Direction(Coord2D):
