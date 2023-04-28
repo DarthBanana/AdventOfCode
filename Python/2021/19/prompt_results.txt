@@ -1,0 +1,5 @@
+Puzzle 2021/19 : Correct Answers retrieved from prompt on 2023-04-28 13:39:51
+Part1: Your puzzle answer was <code>396</code>.
+Part2: Your puzzle answer was <code>11828</code>.
+
+
